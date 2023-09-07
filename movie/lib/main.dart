@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:movie/widget/home_page.dart';
+import 'package:movie/widget/video_test.dart';
+import 'package:movie/widget/video_test_parameter.dart';
 
 void main() async {
   initServices();
@@ -47,7 +49,8 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: HomePage(),
+      home: VideoPlayerExampleParameter(url: 'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4'),
+      // home: VideoPlayerExample(),
     );
   }
 }
