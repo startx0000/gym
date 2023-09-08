@@ -23,12 +23,14 @@ class HomeController extends GetxController {
   }
 
   changeTitle(){
-    title.value=title.value + title.value;
   }
 
   @override
   void onInit() {
-    workouts.add(Workout(name: "s", category: "s", video: "s", weight: false, level: "s", description: "s"));
+    workouts.add(Workout(name: "tedi", category: "s", video: "s", weight: false, level: "s", description: "s",img: "https://images.unsplash.com/photo-1682685796852-aa311b46f50d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0OTczNDd8MXwxfGFsbHwxfHx8fHx8MXx8MTY5NDE5Mzc2Nnw&ixlib=rb-4.0.3&q=80&w=400"));
+    workouts.add(Workout(name: "tedi", category: "s", video: "s", weight: false, level: "s", description: "s",img: "https://images.unsplash.com/photo-1682685796852-aa311b46f50d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0OTczNDd8MXwxfGFsbHwxfHx8fHx8MXx8MTY5NDE5Mzc2Nnw&ixlib=rb-4.0.3&q=80&w=400"));
+    workouts.add(Workout(name: "tedi", category: "s", video: "s", weight: false, level: "s", description: "s",img: "https://images.unsplash.com/photo-1682685796852-aa311b46f50d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0OTczNDd8MXwxfGFsbHwxfHx8fHx8MXx8MTY5NDE5Mzc2Nnw&ixlib=rb-4.0.3&q=80&w=400"));
+    workouts.add(Workout(name: "tedi", category: "s", video: "s", weight: false, level: "s", description: "s",img: "https://images.unsplash.com/photo-1682685796852-aa311b46f50d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0OTczNDd8MXwxfGFsbHwxfHx8fHx8MXx8MTY5NDE5Mzc2Nnw&ixlib=rb-4.0.3&q=80&w=400"));
     super.onInit();
   }
 
