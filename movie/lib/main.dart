@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: VideoPlayerExampleParameter(url: 'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4'),
+      home: HomePage(),
       // home: VideoPlayerExample(),
     );
   }
