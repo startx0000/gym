@@ -14,42 +14,48 @@ class CardWorkout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Container(
-        decoration: BoxDecoration(
-            color: Colors.white,
-            boxShadow: [
-              BoxShadow(blurRadius: 7,offset: const Offset(0, 7) ,color: Colors.grey[300]!)
+      padding:  EdgeInsets.all( Get.height*0.01),
+      child: InkWell(
+        onTap: () => Get.to(VideoPlayerExampleParameter(workout: workout,url: '${homeController.connection}/video/${workout.video}' )),
 
-            ]
-        ),
-        margin: EdgeInsets.all(3.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+        child: Container(
+          decoration: BoxDecoration(
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(blurRadius: 7,offset: const Offset(0, 7) ,color: Colors.grey[300]!)
 
-            SizedBox(height: 1.0,),
-            Text(' ${workout.description}',
-              style:   const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  // fontSize: 12.0.sp,
-                  color: Colors.grey
-              ),
-            ),
-            SizedBox(height: 4.0*size.height*0.01,),
-            InkWell(
-              onTap: () => Get.to(VideoPlayerExampleParameter(workout: workout,url: '${homeController.connection}/video/${workout.video}' )),
-              child: Text(' see video',
-                style:   const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    // fontSize: 12.0.sp,
-                    color: Colors.grey
+              ]
+          ),
+          margin: EdgeInsets.all(Get.height*0.01),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+
+              SizedBox(height: Get.height*0.01,),
+              Center(
+                child: Text(' ${workout.name}',
+                  style:   const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      // fontSize: 12.0.sp,
+                      color: Colors.grey
+                  ),
                 ),
               ),
-            ),
-          ],
-        ),
+              SizedBox(height: size.height*0.04,),
+              // InkWell(
+              //   onTap: () => Get.to(VideoPlayerExampleParameter(workout: workout,url: '${homeController.connection}/video/${workout.video}' )),
+              //   child: Text(' see video',
+              //     style:   const TextStyle(
+              //         fontWeight: FontWeight.bold,
+              //         // fontSize: 12.0.sp,
+              //         color: Colors.grey
+              //     ),
+              //   ),
+              // ),
+            ],
+          ),
 
+        ),
       ),
     );
   }
