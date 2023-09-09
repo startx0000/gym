@@ -21,7 +21,7 @@ class HomePage extends StatelessWidget {
 
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.black12,
         body: Container(
           child: Column(
             children: [
