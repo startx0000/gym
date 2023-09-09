@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:movie/widget/video_test_parameter.dart';
 
+import '../controllers/HomeController.dart';
 import '../model/Workout.dart';
 
 class CardWorkout extends StatelessWidget {
   final Workout workout;
   final Size size;
-  const CardWorkout({super.key,required this.workout,required this.size});
+  CardWorkout({super.key,required this.workout,required this.size});
+  HomeController homeController = Get.find<HomeController>();
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +34,17 @@ class CardWorkout extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                   // fontSize: 12.0.sp,
                   color: Colors.grey
+              ),
+            ),
+            SizedBox(height: 4.0*size.height*0.01,),
+            InkWell(
+              onTap: () => Get.to(VideoPlayerExampleParameter(workout: workout,url: '${homeController.connection}/video/${workout.video}' )),
+              child: Text(' see video',
+                style:   const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    // fontSize: 12.0.sp,
+                    color: Colors.grey
+                ),
               ),
             ),
           ],
