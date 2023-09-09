@@ -10,25 +10,22 @@ class VideoPlayerExampleParameter extends StatefulWidget {
   const VideoPlayerExampleParameter({Key? key,required this.url,required this.workout}) : super(key: key);
 
   @override
-  State<VideoPlayerExampleParameter> createState() => _VideoPlayerExampleParameterState(url:url);
+  State<VideoPlayerExampleParameter> createState() => _VideoPlayerExampleParameterState();
 }
 
 class _VideoPlayerExampleParameterState extends State<VideoPlayerExampleParameter> {
   late VideoPlayerController controller;
-  String videoUrl = 'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4';
-  String videoUrl2 = 'https://e8c4-93-35-221-109.ngrok-free.app/video/earth.mp4';
-  final String url;
-  _VideoPlayerExampleParameterState({required this.url});
+  _VideoPlayerExampleParameterState();
 
   @override
   void initState() {
     super.initState();
-    controller = VideoPlayerController.network(url);
+    controller = VideoPlayerController.network(widget.url);
 
     controller.addListener(() {
       setState(() {});
     });
-    controller.setLooping(true);
+    controller.setLooping(false);
     controller.initialize().then((_) => setState(() {}));
     controller.play();
   }
