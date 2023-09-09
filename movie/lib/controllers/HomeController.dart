@@ -32,10 +32,6 @@ class HomeController extends GetxController {
   @override
   void onInit() async {
     await getWorkouts();
-    workouts.add(Workout(name: "tedi", category: "s", video: "s", weight: false, level: "s", description: "s",img: "https://images.unsplash.com/photo-1682685796852-aa311b46f50d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0OTczNDd8MXwxfGFsbHwxfHx8fHx8MXx8MTY5NDE5Mzc2Nnw&ixlib=rb-4.0.3&q=80&w=400"));
-    workouts.add(Workout(name: "tedi", category: "s", video: "s", weight: false, level: "s", description: "s",img: "https://images.unsplash.com/photo-1682685796852-aa311b46f50d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0OTczNDd8MXwxfGFsbHwxfHx8fHx8MXx8MTY5NDE5Mzc2Nnw&ixlib=rb-4.0.3&q=80&w=400"));
-    workouts.add(Workout(name: "tedi", category: "s", video: "s", weight: false, level: "s", description: "s",img: "https://images.unsplash.com/photo-1682685796852-aa311b46f50d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0OTczNDd8MXwxfGFsbHwxfHx8fHx8MXx8MTY5NDE5Mzc2Nnw&ixlib=rb-4.0.3&q=80&w=400"));
-    workouts.add(Workout(name: "tedi", category: "s", video: "s", weight: false, level: "s", description: "s",img: "https://images.unsplash.com/photo-1682685796852-aa311b46f50d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0OTczNDd8MXwxfGFsbHwxfHx8fHx8MXx8MTY5NDE5Mzc2Nnw&ixlib=rb-4.0.3&q=80&w=400"));
     super.onInit();
   }
 
@@ -45,6 +41,7 @@ class HomeController extends GetxController {
       changeLoading();
       var response = await DioService().get('https://c33b-93-35-221-109.ngrok-free.app/workout/all');
       if (response.statusCode == 200) {
+        workouts.clear();
         response.data.forEach((element) {
           workouts.add(Workout.fromJson(element));
         });
