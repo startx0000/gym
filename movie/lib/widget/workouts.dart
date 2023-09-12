@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:movie/icons/my_flutter_app_icons.dart';
 import 'package:movie/widget/workoutTile.dart';
 
 import '../controllers/HomeController.dart';
@@ -126,6 +127,34 @@ class Workouts extends StatelessWidget {
             child: InkWell(
               onTap: () => Get.to(FilePickerDemo(title: 'myTitle')),
               child: Icon(Icons.upload, color: Colors.red, fill: 0.2),
+            ),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.all(_height * 0.01),
+          child: Container(
+            width: _width * 0.2,
+            height: _height * 0.08,
+            decoration: BoxDecoration(
+                color: Colors.black26,
+                borderRadius: BorderRadius.circular(20.0)),
+            child: InkWell(
+              onTap: () => homeController.shuffle(),
+              child: Icon(Icons.shuffle, color: Colors.red, fill: 0.2),
+            ),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.all(_height * 0.01),
+          child: Container(
+            width: _width * 0.2,
+            height: _height * 0.08,
+            decoration: BoxDecoration(
+                color: Colors.black26,
+                borderRadius: BorderRadius.circular(20.0)),
+            child: InkWell(
+              onTap: () => homeController.shuffle(),
+              child: Icon(MyFlutterApp.muscle_up,color: Colors.red,),
             ),
           ),
         ),

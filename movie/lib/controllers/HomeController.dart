@@ -1,5 +1,5 @@
-import 'dart:developer';
-import 'dart:io';
+import 'dart:developer' as dev;
+import 'dart:math';
 
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
@@ -22,6 +22,15 @@ class HomeController extends GetxController {
   // var plans= <Workout>[].obs;
   List<String> categories = List<String>.empty().obs;
 
+
+  var targets = [
+    "Chest",
+    "Legs",
+    "Back",
+    "Arms",
+    "Abdominals",
+    "Shoulders"
+  ].obs;
   var categorySelected = 'All'.obs;
 
   var selectedIndex = 0.obs;
@@ -32,8 +41,8 @@ class HomeController extends GetxController {
     "views",
   ];
 
-  changeLoading() {
-    isLoading.value = !isLoading.value;
+  changeLoading(bool val) {
+    isLoading.value = val;
   }
 
   changeTitle() {
@@ -64,7 +73,7 @@ class HomeController extends GetxController {
   }
 
   upload() async {
-    log('upload clicked!');
+    dev.log('upload clicked!');
     FilePickerResult? result = await FilePicker.platform.pickFiles();
 
     if (result != null) {
@@ -88,33 +97,33 @@ class HomeController extends GetxController {
   }
 
   getCategories() async {
-    log("calling service category");
+    dev.log("calling service category");
 
-    changeLoading();
+    changeLoading(true);
     var response = await DioService().get('${connection.value}/workout/categories');
     if (response.statusCode == 200) {
       categories.clear();
       response.data.forEach((element) {
-        log(element);
+        dev.log(element);
         categories.add(element);
       });
     } else {
       errorMsg.value = "Errors";
     }
 
-    changeLoading();
+    changeLoading(false);
   }
 
 
   getWorkouts({String ? category}) async {
-    log("calling service");
+    dev.log("calling service");
 
     String query ='';
     if(category !=null && category.isNotEmpty ) {
       query='?category=${category}';
     }
 
-    changeLoading();
+    changeLoading(true);
     var response = await DioService().get('${connection.value}/workout/all${query}');
     if (response.statusCode == 200) {
       workouts.clear();
@@ -125,13 +134,27 @@ class HomeController extends GetxController {
       errorMsg.value = "Errors";
     }
 
-    changeLoading();
+    changeLoading(false);
   }
 
   changeSelectedCategory(String? value) {
       categorySelected.value=value!;
       getWorkouts(category: value);
 
+
+  }
+
+
+  void shuffle() {
+    var random = Random();
+
+    for (var i = workouts.length - 1; i > 0; i--) {
+
+      var n = random.nextInt(i + 1);
+      var temp = workouts[i];
+      workouts[i] = workouts[n];
+      workouts[n] = temp;
+    }
 
   }
 }
