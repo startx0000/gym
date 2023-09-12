@@ -3,8 +3,11 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:movie/widget/workoutTile.dart';
 
 import '../controllers/HomeController.dart';
+import 'filePicker.dart';
 
 class Workouts extends StatelessWidget {
   HomeController homeController = Get.find<HomeController>();
@@ -16,18 +19,11 @@ class Workouts extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _height = MediaQuery
-        .of(context)
-        .size
-        .height;
-    _width = MediaQuery
-        .of(context)
-        .size
-        .width;
+    _height = MediaQuery.of(context).size.height;
+    _width = MediaQuery.of(context).size.width;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.black,
-      appBar: AppBar(),
       body: Container(
         child: Stack(
           alignment: Alignment.center,
@@ -67,11 +63,15 @@ class Workouts extends StatelessWidget {
 
   Widget _foreGroundWidget() {
     return Container(
-      padding: EdgeInsets.fromLTRB(0, _height * 0.02, 0, 0),
+      padding: EdgeInsets.fromLTRB(0, _height * 0.06, 0, 0),
       width: _width * 0.88,
       // color: Colors.blue,
       child: Column(
-          children: [_topBarWidget(), Expanded(child: _movieWidget())],
+          children: [
+            _topBarWidget(),
+            Expanded(child: _movieWidget()),
+            _topDownWidget()
+          ],
           mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.max),
@@ -80,9 +80,56 @@ class Workouts extends StatelessWidget {
 
   Widget _movieWidget() {
     return Container(
-      height: _height * 0.83,
-      padding: EdgeInsets.symmetric(vertical: _height * 0.01),
-      // color: Colors.red,
+        // height: _height * 0.83,
+        padding: EdgeInsets.symmetric(vertical: _height * 0.01),
+        child: Obx(() => homeController.isLoading.value
+            ? Center(
+                child: LoadingAnimationWidget.flickr(
+                  rightDotColor: Colors.black,
+                  leftDotColor: const Color(0xfffd0079),
+                  size: 30,
+                ),
+              )
+            : ListView.builder(
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: EdgeInsets.symmetric(
+                        vertical: _height * 0.01, horizontal: 0),
+                    child: GestureDetector(
+                      onTap: () {
+                        // _backGroundData.state = movies[index].posterURL();
+                      },
+                      child: WorkoutTile(
+                        workout: homeController.workouts[index],
+                        height: _height * 0.2,
+                        width: _width * 0.85,
+                      ),
+                    ),
+                  );
+                },
+                itemCount: homeController.workouts.length,
+              )));
+  }
+
+  Widget _topDownWidget() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Padding(
+          padding: EdgeInsets.all(_height * 0.01),
+          child: Container(
+            width: _width * 0.2,
+            height: _height * 0.08,
+            decoration: BoxDecoration(
+                color: Colors.black26,
+                borderRadius: BorderRadius.circular(20.0)),
+            child: InkWell(
+              onTap: () => Get.to(FilePickerDemo(title: 'myTitle')),
+              child: Icon(Icons.upload, color: Colors.red, fill: 0.2),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -97,12 +144,28 @@ class Workouts extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Expanded(child: Icon(Icons.search_rounded, color: Colors.red,)),
           Expanded(
-            // flex: 5,
-            child: InkWell(
-                onTap: () => homeController.getCategories(),
-                child: Icon(Icons.refresh, color: Colors.red,)),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SizedBox(
+                  width: _width * 0.01,
+                ),
+                Icon(
+                  Icons.search_rounded,
+                  color: Colors.red,
+                ),
+                SizedBox(
+                  width: _width * 0.03,
+                ),
+                InkWell(
+                    onTap: () => homeController.getCategories(),
+                    child: Icon(
+                      Icons.refresh,
+                      color: Colors.red,
+                    )),
+              ],
+            ),
           ),
           // Expanded(child: _searchWidget()),
           Expanded(
@@ -115,18 +178,17 @@ class Workouts extends StatelessWidget {
 
   Widget _selectionWidget() {
     return Obx(
-        ()=> DropdownButton(
-           onTap: () => homeController.categorySelected.value=" ",
-          isExpanded: true,
+      () => DropdownButton(
+        onTap: () => homeController.categorySelected.value = " ",
+        isExpanded: true,
         items: homeController.categories
-            .map((e) =>
-            DropdownMenuItem(
-              value: e,
-              child: Text(
-                e,
-                style: const TextStyle(color: Colors.white),
-              ),
-            ))
+            .map((e) => DropdownMenuItem(
+                  value: e,
+                  child: Text(
+                    e,
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                ))
             .toList(),
         dropdownColor: Colors.black38,
         icon: const Icon(
@@ -139,9 +201,7 @@ class Workouts extends StatelessWidget {
         ),
         value: homeController.categorySelected.value,
         onChanged: (String? value) {
-          value
-              .toString()
-              .isNotEmpty
+          value.toString().isNotEmpty
               ? homeController.changeSelectedCategory(value)
               : null;
         },
