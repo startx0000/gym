@@ -1,17 +1,28 @@
 import 'dart:developer';
+import 'dart:io';
 
+import 'package:dio/dio.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
 
 import '../model/Workout.dart';
 import '../services/DioService.dart';
+import 'package:http_parser/http_parser.dart';
+import 'package:mime_type/mime_type.dart';
+import 'package:dio/src/form_data.dart' as frm;
+import 'package:dio/src/multipart_file.dart' as pippo;
 
 class HomeController extends GetxController {
   var isLoading = false.obs;
-  var errorMsg  = "".obs;
-  var title  = "Workout".obs;
-  var workouts  = List<Workout>.empty().obs;
-  var connection = "https://c33b-93-35-221-109.ngrok-free.app".obs;
+  var errorMsg = "".obs;
+  var title = "Workout".obs;
+  var workouts = List<Workout>.empty().obs;
+  var connection = "https://5271-93-35-221-109.ngrok-free.app".obs;
+
   // var plans= <Workout>[].obs;
+  List<String> categories = List<String>.empty().obs;
+
+  var categorySelected = 'All'.obs;
 
   var selectedIndex = 0.obs;
   List<String> orders = [
@@ -25,32 +36,102 @@ class HomeController extends GetxController {
     isLoading.value = !isLoading.value;
   }
 
-  changeTitle(){
+  changeTitle() {
     getWorkouts();
+  }
+
+  uploadFile({ required String name, required String path}) async {
+    String? mimeType = mime(name);
+    String mimee = mimeType!.split('/')[0];
+    String type = mimeType.split('/')[1];
+    Dio dio = Dio();
+    dio.options.headers["Content-Type"] = "multipart/form-data";
+    var s = new frm.FormData.fromMap({
+      'name': '${name}',
+      'file':await pippo.MultipartFile.fromFile(path,
+          filename: name, contentType: MediaType(mimee, type))
+    });
+    var response = await dio
+        .post('${connection}/video', data: s)
+        .catchError((e) => print(e.response.toString()));
+    // FormData formData = new FormData.from({
+    //   "name": "${name}",
+    //   "file1": new UploadFileInfo(new File("./upload.jpg"), "upload1.jpg")
+    // });
+    // response = await dio.post("/info", data: formData);
+
+
+  }
+
+  upload() async {
+    log('upload clicked!');
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+
+    if (result != null) {
+      PlatformFile file = result.files.first;
+
+      print(file.name);
+      print(file.bytes);
+      print(file.size);
+      print(file.extension);
+      print(file.path);
+    } else {
+      // User canceled the picker
+    }
   }
 
   @override
   void onInit() async {
     await getWorkouts();
+    await getCategories();
     super.onInit();
   }
 
-  getWorkouts() async {
-      log("calling service");
+  getCategories() async {
+    log("calling service category");
 
-      changeLoading();
-      var response = await DioService().get('https://c33b-93-35-221-109.ngrok-free.app/workout/all');
-      if (response.statusCode == 200) {
-        workouts.clear();
-        response.data.forEach((element) {
-          workouts.add(Workout.fromJson(element));
-        });
-      }else {
+    changeLoading();
+    var response = await DioService().get('${connection.value}/workout/categories');
+    if (response.statusCode == 200) {
+      categories.clear();
+      response.data.forEach((element) {
+        log(element);
+        categories.add(element);
+      });
+    } else {
+      errorMsg.value = "Errors";
+    }
 
-        errorMsg.value="Errors";
-      }
+    changeLoading();
+  }
 
-      changeLoading();
+
+  getWorkouts({String ? category}) async {
+    log("calling service");
+
+    String query ='';
+    if(category !=null && category.isNotEmpty ) {
+      query='?category=${category}';
+    }
+
+    changeLoading();
+    var response = await DioService().get('${connection.value}/workout/all${query}');
+    if (response.statusCode == 200) {
+      workouts.clear();
+      response.data.forEach((element) {
+        workouts.add(Workout.fromJson(element));
+      });
+    } else {
+      errorMsg.value = "Errors";
+    }
+
+    changeLoading();
+  }
+
+  changeSelectedCategory(String? value) {
+      categorySelected.value=value!;
+      getWorkouts(category: value);
+
 
   }
 }
