@@ -153,11 +153,50 @@ class Workouts extends StatelessWidget {
                 color: Colors.black26,
                 borderRadius: BorderRadius.circular(20.0)),
             child: InkWell(
-              onTap: () => homeController.shuffle(),
+              onTap: () => log("tapped"),
               child: Icon(MyFlutterApp.muscle_up,color: Colors.red,),
             ),
           ),
         ),
+        // Padding(
+        //   padding: EdgeInsets.all(_height * 0.01),
+        //   child: Container(
+        //     width: _width * 0.2,
+        //     height: _height * 0.08,
+        //     decoration: BoxDecoration(
+        //         color: Colors.black26,
+        //         borderRadius: BorderRadius.circular(20.0)),
+        //     child: InkWell(
+        //       onTap: () => homeController.shuffle(),
+        //       child: Obx(
+        //         () => DropdownButton(
+        //
+        //           // onTap: () => homeController.targetSelected.value = " ",
+        //           items: homeController.categories
+        //               .map((e) => DropdownMenuItem(
+        //                     value: e,
+        //                     child: Text(
+        //                       e,
+        //                       style: const TextStyle(color: Colors.white),
+        //                     ),
+        //                   ))
+        //               .toList(),
+        //           dropdownColor: Colors.black38,
+        //           underline: SizedBox(),
+        //           icon: const Icon(
+        //             MyFlutterApp.muscle_up,
+        //             color: Colors.red,
+        //           ),
+        //           onChanged: (String? value) {
+        //             value.toString().isNotEmpty
+        //                 ? homeController.changeSelectedCategoryTargets(value)
+        //                 : null;
+        //           },
+        //         ),
+        //       ),
+        //     ),
+        //   ),
+        // ),
       ],
     );
   }
@@ -224,10 +263,11 @@ class Workouts extends StatelessWidget {
           Icons.menu,
           color: Colors.white24,
         ),
-        underline: Container(
-          height: 1,
-          color: Colors.white24,
-        ),
+        underline: SizedBox(),
+        // underline: Container(
+        //   height: 1,
+        //   color: Colors.white24,
+        // ),
         value: homeController.categorySelected.value,
         onChanged: (String? value) {
           value.toString().isNotEmpty
