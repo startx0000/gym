@@ -41,6 +41,7 @@ class WorkoutTile extends StatelessWidget {
            //width: width!*0.35,
 
            decoration: BoxDecoration(
+
              borderRadius: BorderRadius.circular(16),
              //   color: Colors.black,
                image: DecorationImage(
@@ -50,6 +51,7 @@ class WorkoutTile extends StatelessWidget {
                          workout.img!=null && workout.img!.isNotEmpty ? '${homeController.connection}/video/${workout!.img!}' : posterURL
 
                        ),
+
                        width: 200,
                        height: 300))),
          ),

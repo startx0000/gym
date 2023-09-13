@@ -5,9 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:movie/icons/my_flutter_app_icons.dart';
+import 'package:movie/widget/upload.dart';
 import 'package:movie/widget/workoutTile.dart';
 
 import '../controllers/HomeController.dart';
+import 'UploadPage.dart';
+import 'example.dart';
 import 'filePicker.dart';
 
 class Workouts extends StatelessWidget {
@@ -116,48 +119,94 @@ class Workouts extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        Padding(
-          padding: EdgeInsets.all(_height * 0.01),
-          child: Container(
-            width: _width * 0.2,
-            height: _height * 0.08,
-            decoration: BoxDecoration(
-                color: Colors.black26,
-                borderRadius: BorderRadius.circular(20.0)),
-            child: InkWell(
-              onTap: () => Get.to(FilePickerDemo(title: 'myTitle')),
-              child: Icon(Icons.upload, color: Colors.red, fill: 0.2),
+        Expanded(
+          child: Padding(
+            padding: EdgeInsets.all(_height * 0.01),
+            child: Container(
+              width: _width * 0.2,
+              height: _height * 0.08,
+              decoration: BoxDecoration(
+                  color: Colors.black26,
+                  borderRadius: BorderRadius.circular(20.0)),
+              child: InkWell(
+                onTap: () => Get.to(UploadPage()),
+                child: Icon(Icons.upload, color: Colors.red, fill: 0.2),
+              ),
             ),
           ),
         ),
-        Padding(
-          padding: EdgeInsets.all(_height * 0.01),
-          child: Container(
-            width: _width * 0.2,
-            height: _height * 0.08,
-            decoration: BoxDecoration(
-                color: Colors.black26,
-                borderRadius: BorderRadius.circular(20.0)),
-            child: InkWell(
-              onTap: () => homeController.shuffle(),
-              child: Icon(Icons.shuffle, color: Colors.red, fill: 0.2),
+        Expanded(
+          child: Padding(
+            padding: EdgeInsets.all(_height * 0.01),
+            child: Container(
+              width: _width * 0.2,
+              height: _height * 0.08,
+              decoration: BoxDecoration(
+                  color: Colors.black26,
+                  borderRadius: BorderRadius.circular(20.0)),
+              child: InkWell(
+                onTap: () => homeController.shuffle(),
+                child: Icon(Icons.shuffle, color: Colors.red, fill: 0.2),
+              ),
             ),
           ),
         ),
-        Padding(
-          padding: EdgeInsets.all(_height * 0.01),
-          child: Container(
-            width: _width * 0.2,
-            height: _height * 0.08,
-            decoration: BoxDecoration(
-                color: Colors.black26,
-                borderRadius: BorderRadius.circular(20.0)),
-            child: InkWell(
-              onTap: () => log("tapped"),
-              child: Icon(MyFlutterApp.muscle_up,color: Colors.red,),
+        Expanded(
+          child: Padding(
+            padding: EdgeInsets.all(_height * 0.01),
+            child: Container(
+              width: _width * 0.2,
+              height: _height * 0.08,
+              decoration: BoxDecoration(
+                  color: Colors.black26,
+                  borderRadius: BorderRadius.circular(20.0)),
+              child: InkWell(
+                onTap: () => Get.to(FilePickerDemo(title: 'myTitle')),
+                child: Icon(Icons.transfer_within_a_station,color: Colors.red,),
+              ),
             ),
           ),
         ),
+        Expanded(
+          child: Padding(
+            padding: EdgeInsets.all(_height * 0.01),
+            child: Container(
+              width: _width * 0.2,
+              height: _height * 0.08,
+              decoration: BoxDecoration(
+                  color: Colors.black26,
+                  borderRadius: BorderRadius.circular(20.0)),
+              child: Obx(
+    ()=> PopupMenuButton<String>(
+                          initialValue: homeController.targetSelected.value,
+                          onSelected: (value) => homeController.changeTargets(value),
+                          itemBuilder: (BuildContext context) {
+                            return <PopupMenuEntry<String>>[
+                              ...homeController.targets.map((element) =>
+                              PopupMenuItem(
+                                  value: element,
+                                  child: Text(element,style: TextStyle(color: Colors.white),),
+                              )).toList()
+
+                            ];
+                          },
+                        icon: Icon(MyFlutterApp.muscle_up,color: Colors.red,),
+                         color: Colors.black38,
+                        constraints: BoxConstraints(
+                            maxHeight:_height * 0.5,
+                           maxWidth: _width * 0.2,
+
+                        ),
+
+                        ),
+              )
+
+              )
+            ),
+        ),
+
+
+
         // Padding(
         //   padding: EdgeInsets.all(_height * 0.01),
         //   child: Container(

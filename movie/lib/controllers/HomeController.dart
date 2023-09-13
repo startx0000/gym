@@ -17,22 +17,24 @@ class HomeController extends GetxController {
   var errorMsg = "".obs;
   var title = "Workout".obs;
   var workouts = List<Workout>.empty().obs;
-  var connection = "https://e641-93-35-221-109.ngrok-free.app".obs;
+  var connection = "https://d726-93-35-221-109.ngrok-free.app".obs;
 
   // var plans= <Workout>[].obs;
   List<String> categories = List<String>.empty().obs;
 
 
   var targets = [
+    "All",
     "Chest",
     "Legs",
     "Back",
     "Arms",
-    "Abdominals",
-    "Shoulders"
+    "Abs",
+    "Shoulder"
   ].obs;
+
   var categorySelected = 'All'.obs;
-  var targetSelected = ''.obs;
+  var targetSelected = 'All'.obs;
 
   var selectedIndex = 0.obs;
   List<String> orders = [
@@ -144,9 +146,9 @@ class HomeController extends GetxController {
 
 
   }
-  changeSelectedCategoryTargets(String? value) {
-    targetSelected.value="";
-    getWorkouts(category: value);
+  changeTargets(String value) {
+    targetSelected.value=value;
+    //getWorkouts(category: value);
 
 
   }
