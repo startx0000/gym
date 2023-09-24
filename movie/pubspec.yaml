@@ -38,6 +38,8 @@ dependencies:
   loading_animation_widget: ^1.2.0+2
   file_picker: ^5.5.0
   mime_type: ^1.0.0
+  flutter_easyloading: ^3.0.5
+
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2

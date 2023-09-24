@@ -26,4 +26,12 @@ class MyFlutterApp {
   static const String? _kFontPkg = null;
 
   static const IconData muscle_up = IconData(0xea48, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData dumbbell = IconData(0xf44b, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+
+  static const IconData sport_gym_cycling = IconData(0xe801, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData yoga_bridge = IconData(0xe802, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData fitness_dumbbell = IconData(0xe803, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData yoga_standing_forward_fold_pose = IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData wpbeginner = IconData(0xf297, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData medium_m = IconData(0xf3c7, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }

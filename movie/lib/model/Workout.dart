@@ -16,6 +16,8 @@ class Workout {
   String level;
   String ?img;
   String description;
+  bool ? fav;
+  List<String> ? targets;
 
   Workout({
     required this.name,
@@ -25,6 +27,8 @@ class Workout {
     required this.level,
     this.img,
     required this.description,
+    this.fav,
+    this.targets
   });
 
   factory Workout.fromJson(Map<String, dynamic> json) => Workout(
@@ -35,6 +39,8 @@ class Workout {
     level: json["level"],
     img: json["img"],
     description: json["description"],
+    fav: json["fav"],
+    targets: List<String>.from(json["targets"].map((x) => x)),
   );
 
   Map<String, dynamic> toJson() => {
@@ -45,5 +51,7 @@ class Workout {
     "level": level,
     "img": img,
     "description": description,
+    "fav": fav,
+    "targets": List<dynamic>.from(targets!.map((x) => x)),
   };
 }

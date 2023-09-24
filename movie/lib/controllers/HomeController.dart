@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
 
+import '../conf/global.dart';
 import '../model/Workout.dart';
 import '../services/DioService.dart';
 import 'package:http_parser/http_parser.dart';
@@ -17,7 +18,15 @@ class HomeController extends GetxController {
   var errorMsg = "".obs;
   var title = "Workout".obs;
   var workouts = List<Workout>.empty().obs;
-  var connection = "https://d726-93-35-221-109.ngrok-free.app".obs;
+  var connection = "${connectionUrl}".obs;
+
+  var fav = false.obs;
+
+  changeFav(bool val) {
+    fav.value = val;
+    getWorkoutsGeneric();
+  }
+
 
   // var plans= <Workout>[].obs;
   List<String> categories = List<String>.empty().obs;
@@ -118,6 +127,39 @@ class HomeController extends GetxController {
   }
 
 
+  getWorkoutsGeneric()async{
+    String query ='';
+    if(categorySelected.value !=null && categorySelected.value.isNotEmpty ) {
+      query='?category=${categorySelected.value}';
+    }else{
+      query='?category=ALL';
+    }
+    if(fav.value !=null && fav.value==true ) {
+      query=query+'&favorite=${fav.value}';
+    }
+
+    if(targetSelected.value !=null && targetSelected.value.isNotEmpty ) {
+      query=query+'&target=${targetSelected.value}';
+    }
+    dev.log(query);
+
+    changeLoading(true);
+    var response = await DioService().get('${connection.value}/workout/all${query}');
+    if (response.statusCode == 200) {
+      workouts.clear();
+      response.data.forEach((element) {
+        workouts.add(Workout.fromJson(element));
+      });
+    } else {
+      dev.log(response);
+
+      errorMsg.value = "Errors";
+    }
+
+    changeLoading(false);
+
+  }
+
   getWorkouts({String ? category}) async {
     dev.log("calling service");
 
@@ -148,6 +190,7 @@ class HomeController extends GetxController {
   }
   changeTargets(String value) {
     targetSelected.value=value;
+    getWorkoutsGeneric();
     //getWorkouts(category: value);
 
 

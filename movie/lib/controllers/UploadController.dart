@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../model/Workout.dart';
@@ -17,6 +20,23 @@ class UploadController extends GetxController {
 
   var uploaded = "YET".obs;
   Rx<FilePickerResult>? result;
+
+  final editController = TextEditingController();
+  final formKey = GlobalKey<FormState>();
+  final chipIndexCategory = 0.obs;
+  final chipIndexLevel = 0.obs;
+  final videoName ="".obs;
+
+  var weight = false.obs;
+
+
+  @override
+  void onClose() {
+    editController.dispose();
+
+    super.onClose();
+  }
+
 
   changeLoading(bool val) {
     isLoading.value = val;
@@ -42,10 +62,12 @@ class UploadController extends GetxController {
 
     try {
       var response =
-          await dio.post('${connection}/video', data: s);
+          await dio.post('${connectionUrl}/video', data: s);
 
-      if (response.statusCode == 200)
+      if (response.statusCode == 200) {
         uploaded.value = "OK";
+        videoName.value=name;
+      }
       else
         uploaded.value = "ERROR";
     } on Exception catch (e) {
@@ -54,6 +76,50 @@ class UploadController extends GetxController {
     }
 
     changeLoading(false);
+
+  }
+
+  Future<bool> uploadWorkout() async {
+    var description = "Workout for building muscle";
+
+    var category="muscle";
+    if(chipIndexCategory==1) {
+      category = "mobility";
+      description ="Workout for mobility";
+    }
+    if(chipIndexCategory==2){
+      category="cardio";
+      description="Cardio workout";
+    }
+    if(chipIndexCategory==3){
+      category="Stretch";
+      description="Streching exercise";
+    }
+
+    var level = "beginner";
+    if(chipIndexLevel==1)
+      level="medium";
+    if(chipIndexLevel==2) {
+      level="hard";
+    }
+
+    var workout = Workout(name: editController.text, category: category, video: this.videoName.value, weight: this.weight.value, level: level, description: description);
+
+    Dio dio = Dio();
+    dio.options.headers["Content-Type"] = "application/json";
+    try {
+      var response =
+          await dio.post('${connectionUrl}/workout', data: workoutToJson(workout));
+
+      if (response.statusCode == 200) {
+        return true;
+      }
+      else
+        return false;
+    } on Exception catch (e) {
+      return false;
+    }
+
 
   }
 }

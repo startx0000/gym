@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:movie/widget/home_page.dart';
 import 'package:movie/widget/video_test.dart';
 import 'package:movie/widget/video_test_parameter.dart';
+import 'package:movie/widget/workouts.dart';
 
 void main() async {
   initServices();
@@ -49,7 +51,8 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: HomePage(),
+      home: Workouts(),
+      builder: EasyLoading.init(),
       // home: VideoPlayerExample(),
     );
   }

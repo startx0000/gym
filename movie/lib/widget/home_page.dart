@@ -15,7 +15,7 @@ import 'filePicker.dart';
 class HomePage extends StatelessWidget {
   HomePage({super.key});
 
-  HomeController homeController = Get.put(HomeController());
+  HomeController homeController = Get.find<HomeController>();
 
   @override
   Widget build(BuildContext context) {

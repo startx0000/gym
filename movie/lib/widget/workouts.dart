@@ -14,7 +14,7 @@ import 'example.dart';
 import 'filePicker.dart';
 
 class Workouts extends StatelessWidget {
-  HomeController homeController = Get.find<HomeController>();
+  HomeController homeController = Get.put(HomeController());
 
   Workouts({super.key});
 
@@ -190,7 +190,7 @@ class Workouts extends StatelessWidget {
 
                             ];
                           },
-                        icon: Icon(MyFlutterApp.muscle_up,color: Colors.red,),
+                        icon: Icon(MyFlutterApp.yoga_standing_forward_fold_pose,color: Colors.red,),
                          color: Colors.black38,
                         constraints: BoxConstraints(
                             maxHeight:_height * 0.5,
@@ -268,9 +268,17 @@ class Workouts extends StatelessWidget {
                 SizedBox(
                   width: _width * 0.01,
                 ),
-                Icon(
-                  Icons.search_rounded,
-                  color: Colors.red,
+                InkWell(
+                  onTap: () {
+                    homeController.changeFav(!homeController.fav.value);
+                  },
+
+                  child: Obx(
+                    ()=> Icon(
+                      Icons.favorite,
+                      color: homeController.fav.value ? Colors.red :Colors.white38,
+                    ),
+                  ),
                 ),
                 SizedBox(
                   width: _width * 0.03,

@@ -95,7 +95,7 @@ class WorkoutTile extends StatelessWidget {
              Container(
                padding: EdgeInsets.fromLTRB(width! * 0.02, height! * 0.02, 0, 0),
                child: Text(
-                 "${workout!.category!.toUpperCase()} | R: ${workout!.level!} !}",
+                 "${workout!.category!.toUpperCase()} | R: ${workout!.level!} ",
                  style: TextStyle(color: Colors.white, fontSize: 12),
                ),
              ),
@@ -107,7 +107,17 @@ class WorkoutTile extends StatelessWidget {
                  maxLines: 6,
                  overflow: TextOverflow.ellipsis,
                ),
-             )
+             ),
+
+             // Container(
+             //   padding: EdgeInsets.fromLTRB(width! * 0.02, height! * 0.07, 0, 0),
+             //   child: Text(
+             //     workout!.targets!.toString(),
+             //     style: TextStyle(color: Colors.white70, fontSize: 10),
+             //     maxLines: 6,
+             //     overflow: TextOverflow.ellipsis,
+             //   ),
+             // )
            ],
          ),
        ),
