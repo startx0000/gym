@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:movie/widget/WorkoutModPage.dart';
 import 'package:movie/widget/video_test_parameter.dart';
 
 import '../controllers/HomeController.dart';
@@ -34,7 +35,8 @@ class WorkoutTile extends StatelessWidget {
    Widget moviePoster(String posterURL) {
      {
        return InkWell(
-         onTap: () => Get.to(VideoPlayerExampleParameter(workout: workout,url: '${homeController.connection}/video/${workout.video}' )),
+         onTap: () => Get.to(WorkoutModPage(workout: workout,url: '${homeController.connection}/video/${workout.video}' )),
+         // onTap: () => Get.to(VideoPlayerExampleParameter(workout: workout,url: '${homeController.connection}/video/${workout.video}' )),
 
          child: Container(
            height: height,
