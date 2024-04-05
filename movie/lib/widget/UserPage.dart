@@ -18,7 +18,6 @@ GoogleSignIn _googleSignIn = GoogleSignIn(
   scopes: scopes,
 );
 
-
 class UserPage extends StatefulWidget {
   const UserPage({super.key});
 
@@ -27,7 +26,6 @@ class UserPage extends StatefulWidget {
 }
 
 class _UserPageState extends State<UserPage> {
-
   HomeController homeController = Get.find<HomeController>();
 
   @override
@@ -41,24 +39,21 @@ class _UserPageState extends State<UserPage> {
         print('Access token from google $accessToken');
 
         _getBeToken(accessToken);
-
       });
     }).onError((onError) => print(onError));
   }
+
   void _getBeToken(String accessToken) async {
     print("Trying token exchange");
     try {
-      var res = await DioService().getExchangeToken(
-          "$connectionUrlAuth/getGoogleToken",
-          accessToken);
+      var res = await DioService()
+          .getExchangeToken("$connectionUrlAuth/getGoogleToken", accessToken);
       print("Response token:" + res.data);
 
       homeController.setToken(res.data);
 
-
-      var user = await DioService().getWithBearer(
-          "$connectionUrlAuth/api/userextras/me",
-          res.data);
+      var user = await DioService()
+          .getWithBearer("$connectionUrlAuth/api/userextras/me", res.data);
       print("Response bank end service:" + user.data);
 
       homeController.setUser(user.data);
@@ -67,8 +62,6 @@ class _UserPageState extends State<UserPage> {
       print(e.toString());
     }
   }
-
-
 
   late double _height;
   late double _width;
@@ -133,20 +126,22 @@ class _UserPageState extends State<UserPage> {
                             ),
                             Expanded(
                               child: Container(
-                                child:  Obx(
-                                  () => homeController.loggedIn.value ? Text(
-                                    "${homeController.user.value}",
-                                    style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w700),
-                                  ) : const Text(
-                                    "Log in",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w700),
-                                  ),
+                                child: Obx(
+                                  () => homeController.loggedIn.value
+                                      ? Text(
+                                          "${homeController.user.value}",
+                                          style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w700),
+                                        )
+                                      : const Text(
+                                          "Log in",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w700),
+                                        ),
                                 ),
                               ),
                             )
@@ -178,82 +173,90 @@ class _UserPageState extends State<UserPage> {
         const SizedBox(
           height: 120,
         ),
-        Container(
-          margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-          child: MaterialButton(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.0)),
-            padding: const EdgeInsets.all(10.0),
-            onPressed: () => _googleSignIn.signIn(),
-            color: Colors.white,
-            elevation: 5,
-            child: const Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                CircleAvatar(
-                  backgroundImage: NetworkImage(
-                      "https://storage.googleapis.com/gd-wagtail-prod-assets/original_images/evolving_google_identity_videoposter_006.jpg"),
+
+        Obx(() => homeController.loggedIn.value
+            ? Container(
+                margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                child: MaterialButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0)),
+                  padding: const EdgeInsets.all(10.0),
+                  onPressed: () => {signOut()},
+                  color: Colors.white,
+                  elevation: 5,
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      CircleAvatar(
+                        backgroundImage: NetworkImage(
+                            "https://storage.googleapis.com/gd-wagtail-prod-assets/original_images/evolving_google_identity_videoposter_006.jpg"),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 10.0),
+                        child: Text("Sign out"),
+                      ),
+                    ],
+                  ),
                 ),
-                Padding(
-                  padding: EdgeInsets.only(left: 10.0),
-                  child: Text("Login with Google    "),
+              )
+            : Container(
+                margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                child: MaterialButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0)),
+                  padding: const EdgeInsets.all(10.0),
+                  onPressed: () => _googleSignIn.signIn(),
+                  color: Colors.white,
+                  elevation: 5,
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      CircleAvatar(
+                        backgroundImage: NetworkImage(
+                            "https://storage.googleapis.com/gd-wagtail-prod-assets/original_images/evolving_google_identity_videoposter_006.jpg"),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 10.0),
+                        child: Text("Login with Google    "),
+                      ),
+                    ],
+                  ),
                 ),
-              ],
-            ),
-          ),
-        ),
-        Container(
-          margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-          child: MaterialButton(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.0)),
-            padding: const EdgeInsets.all(10.0),
-            onPressed: () => _googleSignIn.signOut(),
-            color: Colors.white,
-            elevation: 5,
-            child: const Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                CircleAvatar(
-                  backgroundImage: NetworkImage(
-                      "https://as1.ftcdn.net/v2/jpg/03/95/29/32/1000_F_395293226_A4boRgABAbfXmAmmynQHcjjIIB3MjDCj.jpg"),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 10.0),
-                  child: Text("Sign out"),
-                ),
-              ],
-            ),
-          ),
-        ),    Container(
-          margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-          child: MaterialButton(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.0)),
-            padding: const EdgeInsets.all(10.0),
-            onPressed: () => Get.to(Workouts()),
-            color: Colors.white,
-            elevation: 5,
-            child: const Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                CircleAvatar(
-                  backgroundImage: NetworkImage(
-                      "https://as1.ftcdn.net/v2/jpg/03/95/29/32/1000_F_395293226_A4boRgABAbfXmAmmynQHcjjIIB3MjDCj.jpg"),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 10.0),
-                  child: Text("Skip"),
-                ),
-              ],
-            ),
-          ),
-        ),
+              )),
+
+        // Container(
+        //   margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+        //   child: MaterialButton(
+        //     shape: RoundedRectangleBorder(
+        //         borderRadius: BorderRadius.circular(20.0)),
+        //     padding: const EdgeInsets.all(10.0),
+        //     onPressed: () => Get.to(Workouts()),
+        //     color: Colors.white,
+        //     elevation: 5,
+        //     child: const Row(
+        //       mainAxisAlignment: MainAxisAlignment.center,
+        //       crossAxisAlignment: CrossAxisAlignment.center,
+        //       children: [
+        //         CircleAvatar(
+        //           backgroundImage: NetworkImage(
+        //               "https://as1.ftcdn.net/v2/jpg/03/95/29/32/1000_F_395293226_A4boRgABAbfXmAmmynQHcjjIIB3MjDCj.jpg"),
+        //         ),
+        //         Padding(
+        //           padding: EdgeInsets.only(left: 10.0),
+        //           child: Text("Skip"),
+        //         ),
+        //       ],
+        //     ),
+        //   ),
+        // ),
       ],
     );
+  }
 
+  signOut() {
+    _googleSignIn.signOut();
+    homeController.setLoggedIn(false);
   }
 }
