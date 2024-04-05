@@ -6,7 +6,7 @@ import 'package:video_player/video_player.dart';
 
 import '../icons/my_flutter_app_icons.dart';
 import '../model/Workout.dart';
-import 'Background.dart';
+import 'ui/Background.dart';
 
 class WorkoutModPage extends StatefulWidget {
   final String url;

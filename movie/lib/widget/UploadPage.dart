@@ -10,7 +10,7 @@ import 'package:movie/icons/icons.dart';
 import 'package:movie/icons/my_flutter_app_icons.dart';
 
 import '../controllers/UploadController.dart';
-import 'Background.dart';
+import 'ui/Background.dart';
 
 class UploadPage extends StatefulWidget {
   const UploadPage({super.key});

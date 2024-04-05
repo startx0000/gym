@@ -5,13 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:movie/icons/my_flutter_app_icons.dart';
-import 'package:movie/widget/upload.dart';
+import 'package:movie/widget/old/upload.dart';
 import 'package:movie/widget/workoutTile.dart';
 
 import '../controllers/HomeController.dart';
 import 'UploadPage.dart';
-import 'example.dart';
-import 'filePicker.dart';
+import 'old/example.dart';
+import 'old/filePicker.dart';
 
 class Workouts extends StatelessWidget {
   HomeController homeController = Get.put(HomeController());
@@ -162,7 +162,7 @@ class Workouts extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20.0)),
               child: InkWell(
                 onTap: () => Get.to(FilePickerDemo(title: 'myTitle')),
-                child: Icon(Icons.transfer_within_a_station,color: Colors.red,),
+                child: Icon(Icons.perm_device_information,color: Colors.red,),
               ),
             ),
           ),

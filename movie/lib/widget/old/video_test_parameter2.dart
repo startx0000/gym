@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
 
-import '../model/Workout.dart';
+import '../../model/Workout.dart';
 
 class VideoPlayerExampleParameter2 extends StatefulWidget {
   final String url;

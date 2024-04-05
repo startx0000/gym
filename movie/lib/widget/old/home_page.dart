@@ -5,11 +5,11 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:movie/controllers/HomeController.dart';
-import 'package:movie/widget/bar.dart';
+import 'package:movie/widget/old/bar.dart';
 import 'package:movie/widget/workouts.dart';
 
-import '../model/Workout.dart';
-import 'cardWorkout.dart';
+import '../../model/Workout.dart';
+import '../cardWorkout.dart';
 import 'filePicker.dart';
 
 class HomePage extends StatelessWidget {

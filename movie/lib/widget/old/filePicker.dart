@@ -1,9 +1,9 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:movie/widget/Background.dart';
+import 'package:movie/widget/ui/Background.dart';
 
-import '../controllers/HomeController.dart';
+import '../../controllers/HomeController.dart';
 
 class FilePickerDemo extends StatefulWidget {
   const FilePickerDemo({super.key, required this.title});

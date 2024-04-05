@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:movie/widget/video_test_parameter.dart';
+import 'package:movie/widget/old/video_test_parameter.dart';
 
 import '../controllers/HomeController.dart';
 import '../model/Workout.dart';

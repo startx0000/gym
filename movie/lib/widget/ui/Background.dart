@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../controllers/HomeController.dart';
+import '../../controllers/HomeController.dart';
 
 class Background extends StatelessWidget {
    Background({super.key});

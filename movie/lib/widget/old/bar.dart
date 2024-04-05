@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
-import '../controllers/HomeController.dart';
+import '../../controllers/HomeController.dart';
 
 class Bar extends StatelessWidget {
   final size;

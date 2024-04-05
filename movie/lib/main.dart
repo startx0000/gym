@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
-import 'package:movie/widget/home_page.dart';
-import 'package:movie/widget/video_test.dart';
-import 'package:movie/widget/video_test_parameter.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:movie/widget/old/home_page.dart';
+import 'package:movie/widget/login_page.dart';
+import 'package:movie/widget/old/video_test.dart';
+import 'package:movie/widget/old/video_test_parameter.dart';
 import 'package:movie/widget/workouts.dart';
 
+
+
 void main() async {
+  // WidgetsFlutterBinding.ensureInitialized();
+
+
   initServices();
   runApp(const MyApp());
 }
@@ -51,7 +58,8 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: Workouts(),
+      // home: Workouts(),
+      home: UserLogin(),
       builder: EasyLoading.init(),
       // home: VideoPlayerExample(),
     );

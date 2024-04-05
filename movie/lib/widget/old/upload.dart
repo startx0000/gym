@@ -4,7 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:movie/controllers/UploadController.dart';
-import 'package:movie/widget/Background.dart';
+import 'package:movie/widget/ui/Background.dart';
 import 'package:movie/widget/workouts.dart';
 
 class Upload extends StatelessWidget {
