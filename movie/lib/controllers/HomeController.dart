@@ -19,28 +19,33 @@ class HomeController extends GetxController {
   var title = "Workout".obs;
   var workouts = List<Workout>.empty().obs;
   var connection = "${connectionUrl}".obs;
-
   var fav = false.obs;
+
+  var loggedIn = false.obs;
+  var token = "".obs;
+  var user = "".obs;
+
+  setUser(String name) {
+    user.value = name;
+  }
+
+  setToken(String tok){
+    token.value=tok;
+
+  }
+  setLoggedIn(bool val) {
+    loggedIn.value = val;
+  }
 
   changeFav(bool val) {
     fav.value = val;
     getWorkoutsGeneric();
   }
 
-
   // var plans= <Workout>[].obs;
   List<String> categories = List<String>.empty().obs;
 
-
-  var targets = [
-    "All",
-    "Chest",
-    "Legs",
-    "Back",
-    "Arms",
-    "Abs",
-    "Shoulder"
-  ].obs;
+  var targets = ["All", "Chest", "Legs", "Back", "Arms", "Abs", "Shoulder"].obs;
 
   var categorySelected = 'All'.obs;
   var targetSelected = 'All'.obs;
@@ -61,7 +66,7 @@ class HomeController extends GetxController {
     getWorkouts();
   }
 
-  uploadFile({ required String name, required String path}) async {
+  uploadFile({required String name, required String path}) async {
     String? mimeType = mime(name);
     String mimee = mimeType!.split('/')[0];
     String type = mimeType.split('/')[1];
@@ -69,7 +74,7 @@ class HomeController extends GetxController {
     dio.options.headers["Content-Type"] = "multipart/form-data";
     var s = new frm.FormData.fromMap({
       'name': '${name}',
-      'file':await pippo.MultipartFile.fromFile(path,
+      'file': await pippo.MultipartFile.fromFile(path,
           filename: name, contentType: MediaType(mimee, type))
     });
     var response = await dio
@@ -80,8 +85,6 @@ class HomeController extends GetxController {
     //   "file1": new UploadFileInfo(new File("./upload.jpg"), "upload1.jpg")
     // });
     // response = await dio.post("/info", data: formData);
-
-
   }
 
   upload() async {
@@ -112,7 +115,8 @@ class HomeController extends GetxController {
     dev.log("calling service category");
 
     changeLoading(true);
-    var response = await DioService().get('${connection.value}/workout/categories');
+    var response =
+        await DioService().get('${connection.value}/workout/categories');
     if (response.statusCode == 200) {
       categories.clear();
       response.data.forEach((element) {
@@ -126,25 +130,25 @@ class HomeController extends GetxController {
     changeLoading(false);
   }
 
-
-  getWorkoutsGeneric()async{
-    String query ='';
-    if(categorySelected.value !=null && categorySelected.value.isNotEmpty ) {
-      query='?category=${categorySelected.value}';
-    }else{
-      query='?category=ALL';
+  getWorkoutsGeneric() async {
+    String query = '';
+    if (categorySelected.value != null && categorySelected.value.isNotEmpty) {
+      query = '?category=${categorySelected.value}';
+    } else {
+      query = '?category=ALL';
     }
-    if(fav.value !=null && fav.value==true ) {
-      query=query+'&favorite=${fav.value}';
+    if (fav.value != null && fav.value == true) {
+      query = query + '&favorite=${fav.value}';
     }
 
-    if(targetSelected.value !=null && targetSelected.value.isNotEmpty ) {
-      query=query+'&target=${targetSelected.value}';
+    if (targetSelected.value != null && targetSelected.value.isNotEmpty) {
+      query = query + '&target=${targetSelected.value}';
     }
     dev.log(query);
 
     changeLoading(true);
-    var response = await DioService().get('${connection.value}/workout/all${query}');
+    var response =
+        await DioService().get('${connection.value}/workout/all${query}');
     if (response.statusCode == 200) {
       workouts.clear();
       response.data.forEach((element) {
@@ -157,19 +161,19 @@ class HomeController extends GetxController {
     }
 
     changeLoading(false);
-
   }
 
-  getWorkouts({String ? category}) async {
+  getWorkouts({String? category}) async {
     dev.log("calling service");
 
-    String query ='';
-    if(category !=null && category.isNotEmpty ) {
-      query='?category=${category}';
+    String query = '';
+    if (category != null && category.isNotEmpty) {
+      query = '?category=${category}';
     }
 
     changeLoading(true);
-    var response = await DioService().get('${connection.value}/workout/all${query}');
+    var response =
+        await DioService().get('${connection.value}/workout/all${query}');
     if (response.statusCode == 200) {
       workouts.clear();
       response.data.forEach((element) {
@@ -183,31 +187,24 @@ class HomeController extends GetxController {
   }
 
   changeSelectedCategory(String? value) {
-      categorySelected.value=value!;
-      getWorkouts(category: value);
-
-
+    categorySelected.value = value!;
+    getWorkouts(category: value);
   }
+
   changeTargets(String value) {
-    targetSelected.value=value;
+    targetSelected.value = value;
     getWorkoutsGeneric();
     //getWorkouts(category: value);
-
-
   }
-
-
 
   void shuffle() {
     var random = Random();
 
     for (var i = workouts.length - 1; i > 0; i--) {
-
       var n = random.nextInt(i + 1);
       var temp = workouts[i];
       workouts[i] = workouts[n];
       workouts[n] = temp;
     }
-
   }
 }

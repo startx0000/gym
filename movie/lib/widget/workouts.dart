@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:movie/icons/my_flutter_app_icons.dart';
+import 'package:movie/widget/UserPage.dart';
 import 'package:movie/widget/old/upload.dart';
 import 'package:movie/widget/workoutTile.dart';
 
@@ -161,8 +162,8 @@ class Workouts extends StatelessWidget {
                   color: Colors.black26,
                   borderRadius: BorderRadius.circular(20.0)),
               child: InkWell(
-                onTap: () => Get.to(FilePickerDemo(title: 'myTitle')),
-                child: Icon(Icons.perm_device_information,color: Colors.red,),
+                onTap: () => Get.to(UserPage()),
+                child: Icon(Icons.login_rounded,color: Colors.red,),
               ),
             ),
           ),

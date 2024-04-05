@@ -59,7 +59,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       // home: Workouts(),
-      home: UserLogin(),
+      home: Workouts(),
       builder: EasyLoading.init(),
       // home: VideoPlayerExample(),
     );
