@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer' as dev;
 import 'dart:math';
 
@@ -24,6 +25,28 @@ class HomeController extends GetxController {
   var loggedIn = false.obs;
   var token = "".obs;
   var user = "".obs;
+
+  List<String> userFavorites = List<String>.empty().obs;
+
+
+  void setUserFavorites(data) {
+    List<String> parsedArray = json.decode(data).cast<String>();
+
+    // Printing each element of the array
+    parsedArray.forEach((element) {
+      print("Favorite workout: " + element);
+      userFavorites.add(element);
+    });
+
+
+  }
+  addWorkoutToList(String ? name )
+  { 
+    dev.log('Adding workout $name to the list');
+
+  }
+
+
 
   setUser(String name) {
     user.value = name;
@@ -207,4 +230,6 @@ class HomeController extends GetxController {
       workouts[n] = temp;
     }
   }
+
+
 }

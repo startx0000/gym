@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:movie/widget/ui/Background.dart';
 import 'package:movie/widget/workouts.dart';
 
@@ -37,6 +40,7 @@ class _UserPageState extends State<UserPage> {
       event?.authentication.then((value) {
         String accessToken = value.accessToken!;
         print('Access token from google $accessToken');
+        homeController.isLoading.value=true;
 
         _getBeToken(accessToken);
       });
@@ -58,8 +62,16 @@ class _UserPageState extends State<UserPage> {
 
       homeController.setUser(user.data);
       homeController.setLoggedIn(true);
+
+      var favs = await DioService()
+          .getWithBearer("$connectionUrlAuth/api/workout/gas", res.data);
+      print("Response favorites " + favs.data);
+      homeController.setUserFavorites(favs.data);
+
+      homeController.isLoading.value=false;
     } catch (e) {
       print(e.toString());
+      homeController.isLoading.value=false;
     }
   }
 
@@ -165,11 +177,32 @@ class _UserPageState extends State<UserPage> {
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
+
+        Obx(() =>
+        homeController.isLoading.value
+            ? Center(
+          child: LoadingAnimationWidget.flickr(
+            rightDotColor: Colors.black,
+            leftDotColor: const Color(0xfffd0079),
+            size: 30,
+          ),
+        )
+            :
+
         CircleAvatar(
           backgroundImage: const NetworkImage(
               "https://as1.ftcdn.net/v2/jpg/03/95/29/32/1000_F_395293226_A4boRgABAbfXmAmmynQHcjjIIB3MjDCj.jpg"),
           minRadius: MediaQuery.of(context).size.width / 4,
-        ),
+        )
+        )
+        ,
+
+
+        // CircleAvatar(
+        //   backgroundImage: const NetworkImage(
+        //       "https://as1.ftcdn.net/v2/jpg/03/95/29/32/1000_F_395293226_A4boRgABAbfXmAmmynQHcjjIIB3MjDCj.jpg"),
+        //   minRadius: MediaQuery.of(context).size.width / 4,
+        // ),
         const SizedBox(
           height: 120,
         ),

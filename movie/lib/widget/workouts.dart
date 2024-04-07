@@ -267,29 +267,44 @@ class Workouts extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 SizedBox(
-                  width: _width * 0.01,
+                  width: _width * 0.04,
                 ),
-                InkWell(
-                  onTap: () {
-                    homeController.changeFav(!homeController.fav.value);
-                  },
-
-                  child: Obx(
-                    ()=> Icon(
-                      Icons.favorite,
-                      color: homeController.fav.value ? Colors.red :Colors.white38,
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: _width * 0.03,
-                ),
-                InkWell(
-                    onTap: () => homeController.getCategories(),
-                    child: Icon(
-                      Icons.refresh,
+                Obx(() => homeController.loggedIn.value ?
+                  Container(
+                    child: const Icon(
+                      Icons.verified_user,
                       color: Colors.red,
-                    )),
+                    ) ,
+                  )
+
+                    :
+                    Container()
+
+
+                ),
+
+
+                // InkWell(
+                //   onTap: () {
+                //     homeController.changeFav(!homeController.fav.value);
+                //   },
+                //
+                //   child: Obx(
+                //     ()=> Icon(
+                //       Icons.favorite,
+                //       color: homeController.fav.value ? Colors.red :Colors.white38,
+                //     ),
+                //   ),
+                // ),
+                // SizedBox(
+                //   width: _width * 0.03,
+                // ),
+                // InkWell(
+                //     onTap: () => homeController.getCategories(),
+                //     child: Icon(
+                //       Icons.refresh,
+                //       color: Colors.red,
+                //     )),
               ],
             ),
           ),
