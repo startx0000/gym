@@ -87,7 +87,7 @@ class _UserPageState extends State<UserPage> {
       body: Stack(
         alignment: Alignment.center,
         children: [
-          Background(),
+          Background(backgroundName: "bb1.png"),
           Container(
             padding: EdgeInsets.fromLTRB(0, _height * 0.06, 0, 0),
             width: _width * 0.88,
@@ -190,6 +190,8 @@ class _UserPageState extends State<UserPage> {
             :
 
         CircleAvatar(
+          // backgroundImage: const NetworkImage(
+          //     '$connectionUrl/video/circle.png'),
           backgroundImage: const NetworkImage(
               "https://as1.ftcdn.net/v2/jpg/03/95/29/32/1000_F_395293226_A4boRgABAbfXmAmmynQHcjjIIB3MjDCj.jpg"),
           minRadius: MediaQuery.of(context).size.width / 4,

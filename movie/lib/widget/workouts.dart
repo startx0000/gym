@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:movie/icons/my_flutter_app_icons.dart';
+import 'package:movie/widget/PlanPage.dart';
 import 'package:movie/widget/UserPage.dart';
 import 'package:movie/widget/old/upload.dart';
 import 'package:movie/widget/workoutTile.dart';
@@ -130,12 +131,31 @@ class Workouts extends StatelessWidget {
                   color: Colors.black26,
                   borderRadius: BorderRadius.circular(20.0)),
               child: InkWell(
-                onTap: () => Get.to(UploadPage()),
-                child: Icon(Icons.upload, color: Colors.red, fill: 0.2),
+                onTap: () => Get.to(PlanPage()),
+                child: Icon(Icons.calendar_today, color: Colors.red, fill: 0.2),
               ),
             ),
           ),
         ),
+
+
+
+        // Expanded(
+        //   child: Padding(
+        //     padding: EdgeInsets.all(_height * 0.01),
+        //     child: Container(
+        //       width: _width * 0.2,
+        //       height: _height * 0.08,
+        //       decoration: BoxDecoration(
+        //           color: Colors.black26,
+        //           borderRadius: BorderRadius.circular(20.0)),
+        //       child: InkWell(
+        //         onTap: () => Get.to(UploadPage()),
+        //         child: Icon(Icons.upload, color: Colors.red, fill: 0.2),
+        //       ),
+        //     ),
+        //   ),
+        // ),
         // Expanded(
         //   child: Padding(
         //     padding: EdgeInsets.all(_height * 0.01),

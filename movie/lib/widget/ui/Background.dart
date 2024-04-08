@@ -6,9 +6,9 @@ import 'package:get/get.dart';
 import '../../controllers/HomeController.dart';
 
 class Background extends StatelessWidget {
-   Background({super.key});
+   Background({super.key,this.backgroundName});
   HomeController homeController = Get.find<HomeController>();
-
+  String ? backgroundName;
   late double _width;
   late double _height;
   @override
@@ -16,6 +16,9 @@ class Background extends StatelessWidget {
     _height = MediaQuery.of(context).size.height;
     _width = MediaQuery.of(context).size.width;
     var _background1 = '${homeController.connection}/video/background1.jpg';
+
+    if(backgroundName!= null)
+      _background1 = '${homeController.connection}/video/$backgroundName';
     return Container(
       height: _height,
       width: _width,
