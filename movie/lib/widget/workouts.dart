@@ -131,7 +131,8 @@ class Workouts extends StatelessWidget {
                   color: Colors.black26,
                   borderRadius: BorderRadius.circular(20.0)),
               child: InkWell(
-                onTap: () => Get.to(PlanPage()),
+                // onTap: () => Get.to(PlanPage()),
+                onTap: () => Get.to(()=>PlanPage()),
                 child: Icon(Icons.calendar_today, color: Colors.red, fill: 0.2),
               ),
             ),

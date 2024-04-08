@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:movie/model/Exercise.dart';
 import 'package:movie/widget/WorkoutModPage.dart';
 import 'package:movie/widget/old/video_test_parameter.dart';
 
 import '../controllers/HomeController.dart';
+import '../controllers/PlanController.dart';
 import '../model/Workout.dart';
 
-class WorkoutTile extends StatelessWidget {
+class PlanWorkoutTile extends StatelessWidget {
+  PlanController planController = Get.find<PlanController>();
   HomeController homeController = Get.find<HomeController>();
 
-  WorkoutTile({super.key, this.height, this.width, required this.workout});
+  PlanWorkoutTile({super.key, this.height, this.width, required this.workout});
 
   final double? height;
   final double? width;
-  final Workout workout;
+  final Exercise workout;
 
   @override
   Widget build(BuildContext context) {
@@ -39,31 +42,22 @@ class WorkoutTile extends StatelessWidget {
     {
       return InkWell(
         onTap: () => Get.to(WorkoutModPage(
-            workout: workout,
-            url: '${homeController.connection}/video/${workout.video}')),
+            workout: workout.workout,
+            url: '${homeController.connection}/video/${workout.workout.video}')),
         // onTap: () => Get.to(VideoPlayerExampleParameter(workout: workout,url: '${homeController.connection}/video/${workout.video}' )),
 
         child: Container(
           height: height,
           //width: width!*0.35,
-          // child:  FadeInImage.assetNetwork(
-          //   width: 200 ,
-          //   height: 300,
-          //
-          //   placeholder: 'assets/loading.gif',
-          //   image: workout.img != null &&
-          //                       workout.img!.isNotEmpty
-          //                   ? '${homeController.connection}/video/${workout!.img!}'
-          //                   : posterURL,
-          // ),
+
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16),
               //   color: Colors.black,
               image: DecorationImage(
                   image: ResizeImage(
-                      NetworkImage(workout.img != null &&
-                              workout.img!.isNotEmpty
-                          ? '${homeController.connection}/video/${workout!.img!}'
+                      NetworkImage(workout.workout.img != null &&
+                              workout.workout.img!.isNotEmpty
+                          ? '${homeController.connection}/video/${workout.workout!.img!}'
                           : posterURL),
                       width: 200,
                       height: 300))),
@@ -120,14 +114,14 @@ class WorkoutTile extends StatelessWidget {
             Container(
               padding: EdgeInsets.fromLTRB(width! * 0.02, height! * 0.02, 0, 0),
               child: Text(
-                "${workout!.category!.toUpperCase()} | R: ${workout!.level!} ",
+                "${workout.workout!.category!.toUpperCase()} | R: ${workout.workout!.level!} ",
                 style: TextStyle(color: Colors.white, fontSize: 12),
               ),
             ),
             Container(
               padding: EdgeInsets.fromLTRB(width! * 0.02, height! * 0.07, 0, 0),
               child: Text(
-                workout!.description!,
+                workout.workout!.description!,
                 style: TextStyle(color: Colors.white70, fontSize: 10),
                 maxLines: 6,
                 overflow: TextOverflow.ellipsis,
