@@ -127,9 +127,12 @@ class WorkoutTile extends StatelessWidget {
             Obx(() => homeController.loggedIn.value ?
             Container(
               padding: EdgeInsets.fromLTRB(width! * 0.02, height! * 0.07, 0, 0),
-              child: Icon(
-                Icons.favorite,
-                color: homeController.userFavorites.contains(workout.name) ? Colors.red :Colors.white38,
+              child: InkWell(
+                onTap: () => homeController.addOrRemoveFavorite(workout.name),
+                child: Icon(
+                  Icons.favorite,
+                  color: homeController.userFavorites.contains(workout.name) ? Colors.red :Colors.white38,
+                ),
               ),
             )
                 :

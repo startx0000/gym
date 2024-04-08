@@ -64,7 +64,7 @@ class _UserPageState extends State<UserPage> {
       homeController.setLoggedIn(true);
 
       var favs = await DioService()
-          .getWithBearer("$connectionUrlAuth/api/workout/gas", res.data);
+          .getWithBearer("$connectionUrlAuth/api/workout/favorites", res.data);
       print("Response favorites " + favs.data);
       homeController.setUserFavorites(favs.data);
 

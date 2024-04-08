@@ -136,6 +136,24 @@ class Workouts extends StatelessWidget {
             ),
           ),
         ),
+        // Expanded(
+        //   child: Padding(
+        //     padding: EdgeInsets.all(_height * 0.01),
+        //     child: Container(
+        //       width: _width * 0.2,
+        //       height: _height * 0.08,
+        //       decoration: BoxDecoration(
+        //           color: Colors.black26,
+        //           borderRadius: BorderRadius.circular(20.0)),
+        //       child: InkWell(
+        //         onTap: () => homeController.shuffle(),
+        //         child: Icon(Icons.shuffle, color: Colors.red, fill: 0.2),
+        //       ),
+        //     ),
+        //   ),
+        // ),
+
+
         Expanded(
           child: Padding(
             padding: EdgeInsets.all(_height * 0.01),
@@ -145,9 +163,14 @@ class Workouts extends StatelessWidget {
               decoration: BoxDecoration(
                   color: Colors.black26,
                   borderRadius: BorderRadius.circular(20.0)),
+
               child: InkWell(
-                onTap: () => homeController.shuffle(),
-                child: Icon(Icons.shuffle, color: Colors.red, fill: 0.2),
+                onTap: () => homeController.changeFavUser(!homeController.favUser.value),
+                child: Obx(
+              ()=> Icon(Icons.favorite,
+                    color: homeController.favUser.value ? Colors.red : Colors.white,
+                    fill: 0.2,),
+                ),
               ),
             ),
           ),

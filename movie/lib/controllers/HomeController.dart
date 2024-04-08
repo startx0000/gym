@@ -25,11 +25,52 @@ class HomeController extends GetxController {
   var loggedIn = false.obs;
   var token = "".obs;
   var user = "".obs;
+  var favUser = false.obs;
 
   List<String> userFavorites = List<String>.empty().obs;
 
+  changeFavUser(bool val) {
+    favUser.value = val;
+    getWorkoutsGeneric();
+  }
+
+  void addOrRemoveFavorite(String id) async{
+    // isLoading.value = true;
+    print("AddRemove workout $id");
+    Dio dio = Dio();
+    String url  = "$connectionUrlAuth/api/workout/favorite";
+    Map<String, dynamic> data = {
+      "id": id,
+    };
+    var response = await dio.post(
+      url,
+      data: data,
+      options: Options(
+        headers: {
+          "Authorization": "Bearer ${token.value}",
+          "content-Type": "application/json",
+        },
+      ),
+    );
+    print(response.data);
+
+    await getUserFavorites();
+
+    // isLoading.value = false;
+
+  }
+
+  Future<void> getUserFavorites() async {
+    var favs = await DioService()
+        .getWithBearer("$connectionUrlAuth/api/workout/favorites", token.value);
+    print("Response favorites " + favs.data);
+    setUserFavorites(favs.data);
+
+  }
+
 
   void setUserFavorites(data) {
+    userFavorites.clear();
     List<String> parsedArray = json.decode(data).cast<String>();
 
     // Printing each element of the array
@@ -37,25 +78,20 @@ class HomeController extends GetxController {
       print("Favorite workout: " + element);
       userFavorites.add(element);
     });
-
-
   }
-  addWorkoutToList(String ? name )
-  { 
+
+  addWorkoutToList(String? name) {
     dev.log('Adding workout $name to the list');
-
   }
-
-
 
   setUser(String name) {
     user.value = name;
   }
 
-  setToken(String tok){
-    token.value=tok;
-
+  setToken(String tok) {
+    token.value = tok;
   }
+
   setLoggedIn(bool val) {
     loggedIn.value = val;
   }
@@ -174,8 +210,11 @@ class HomeController extends GetxController {
         await DioService().get('${connection.value}/workout/all${query}');
     if (response.statusCode == 200) {
       workouts.clear();
+      print("favorite flag is ${favUser.value}");
       response.data.forEach((element) {
-        workouts.add(Workout.fromJson(element));
+        Workout single = Workout.fromJson(element);
+        if(favUser.value == false || (favUser.value==true && userFavorites.contains(single.name)))
+          workouts.add(single);
       });
     } else {
       dev.log(response);
@@ -200,7 +239,9 @@ class HomeController extends GetxController {
     if (response.statusCode == 200) {
       workouts.clear();
       response.data.forEach((element) {
-        workouts.add(Workout.fromJson(element));
+        Workout single = Workout.fromJson(element);
+        if(favUser.value == false || (favUser.value==true && userFavorites.contains(single.name)))
+          workouts.add(single);
       });
     } else {
       errorMsg.value = "Errors";
@@ -230,6 +271,4 @@ class HomeController extends GetxController {
       workouts[n] = temp;
     }
   }
-
-
 }
