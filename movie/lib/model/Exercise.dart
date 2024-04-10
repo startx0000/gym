@@ -33,9 +33,11 @@ class Exercise {
       nameExercise: json["nameExercise"],
       name: json["name"],
       order: json["order"],
-      sets: List<ExerciseSet>.from(json["sets"].map((x) => ExerciseSet.fromJson(x))),
-      rest: json["rest"],
-      totalTime: json["totalTime"],
+      sets: json["sets"] != null
+          ? List<ExerciseSet>.from(json["sets"].map((x) => ExerciseSet.fromJson(x)))
+          : [],
+      rest: json["rest"] !=null ? json["rest"] : 0 ,
+      totalTime: json["totalTime"]!=null ? json["totalTime"] : 0,
       status: json["status"],
       workout: Workout.fromJson(json["workout"]),
     );

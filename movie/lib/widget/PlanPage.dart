@@ -6,6 +6,7 @@ import 'package:movie/widget/ui/Background.dart';
 import 'package:movie/widget/ui/Header.dart';
 
 import '../controllers/HomeController.dart';
+import '../model/Exercise.dart';
 import 'PlanWorkoutTile.dart';
 
 class PlanPage extends StatelessWidget {
@@ -64,26 +65,109 @@ class PlanPage extends StatelessWidget {
             size: 30,
           ),
         )
-            : ListView.builder(
+            :
+
+        // ListView.builder(
+        //   itemBuilder: (context, index) {
+        //     return Padding(
+        //       padding: EdgeInsets.symmetric(
+        //           vertical: _height * 0.01, horizontal: 0),
+        //       child: GestureDetector(
+        //         onTap: () {
+        //           // _backGroundData.state = movies[index].posterURL();
+        //         },
+        //         child: PlanWorkoutTile(
+        //           workout: planController.exercices[index],
+        //           height: _height * 0.2,
+        //           width: _width * 0.85,
+        //         ),
+        //       ),
+        //     );
+        //   },
+        //   itemCount: planController.exercices.length,
+        // )
+        // Obx(
+        //     ()=> ReorderableListView(
+        //       onReorder: (oldIndex, newIndex) {
+        //           planController.onReorder(oldIndex,newIndex);
+        //       },
+        //       children: planController.exercices.map((element) =>
+        //
+        //       Container(
+        //         key: ValueKey(element),
+        //         child: Padding(
+        //           padding: EdgeInsets.symmetric(
+        //               vertical: _height * 0.01, horizontal: 0),
+        //           child: GestureDetector(
+        //             onTap: () {
+        //               // _backGroundData.state = movies[index].posterURL();
+        //             },
+        //             child: PlanWorkoutTile(
+        //               workout: element,
+        //               height: _height * 0.2,
+        //               width: _width * 0.85,
+        //             ),
+        //           ),
+        //         ),
+        //       )
+        //
+        //
+        //       ).toList(),
+        //
+        //      ),
+        // )
+        ListView.builder(
           itemBuilder: (context, index) {
-            return Padding(
-              padding: EdgeInsets.symmetric(
-                  vertical: _height * 0.01, horizontal: 0),
-              child: GestureDetector(
-                onTap: () {
-                  // _backGroundData.state = movies[index].posterURL();
-                },
-                child: PlanWorkoutTile(
-                  workout: planController.exercices[index],
-                  height: _height * 0.2,
-                  width: _width * 0.85,
+            return Dismissible(
+              // direction: DismissDirection.startToEnd,
+              key: Key(planController.exercices[index].name),
+              onDismissed: (direction) {
+                if(direction == DismissDirection.endToStart) {
+                  homeController.addWorkoutToList(planController.exercices[index].name,operation: "delete",id:planController.idPlan.value,exercise: planController.exercices[index]);
+                  planController.exercices.removeAt(index);
+
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(SnackBar(content: Text('Removed')));
+                }
+                else {
+                  planController.exercices[index].status="complete";
+                  homeController.addWorkoutToList(planController.exercices[index].name,operation: "mod",id:planController.idPlan.value,exercise: planController.exercices[index]);
+
+
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(SnackBar(content: Text('Completed')));
+                }
+
+
+              },
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                    vertical: _height * 0.01, horizontal: 0),
+                child: GestureDetector(
+                  onTap: () {
+                    // _backGroundData.state = movies[index].posterURL();
+                  },
+                  child: PlanWorkoutTile(
+                    workout: planController.exercices[index],
+                    height: _height * 0.2,
+                    width: _width * 0.85,
+                  ),
                 ),
               ),
             );
           },
           itemCount: planController.exercices.length,
-        )));
+        )
+
+        ));
   }
 
+  void onReorder(int oldIndex, int newIndex) {
+    print("onReorder");
+    if (newIndex > oldIndex) {
+      newIndex -= 1;
+    }
 
+
+  }
 }

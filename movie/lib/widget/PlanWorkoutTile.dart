@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:movie/model/Exercise.dart';
+import 'package:movie/widget/UploadPage.dart';
 import 'package:movie/widget/WorkoutModPage.dart';
 import 'package:movie/widget/old/video_test_parameter.dart';
 
@@ -43,7 +44,8 @@ class PlanWorkoutTile extends StatelessWidget {
       return InkWell(
         onTap: () => Get.to(WorkoutModPage(
             workout: workout.workout,
-            url: '${homeController.connection}/video/${workout.workout.video}')),
+            url:
+                '${homeController.connection}/video/${workout.workout.video}')),
         // onTap: () => Get.to(VideoPlayerExampleParameter(workout: workout,url: '${homeController.connection}/video/${workout.video}' )),
 
         child: Container(
@@ -77,84 +79,229 @@ class PlanWorkoutTile extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Expanded(
-                  flex: 3,
-                  child: Container(
-                    child: Text(
-                      workout!.name!,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 22,
-                          fontWeight: FontWeight.w400),
+            Container(
+              padding: EdgeInsets.fromLTRB(width! * 0.02, height! * 0.01, 0, 0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Expanded(
+                    flex: 3,
+                    child: Container(
+                      child: Text(
+                        workout!.name!,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 22,
+                            fontWeight: FontWeight.w400),
+                      ),
                     ),
                   ),
-                ),
-                Expanded(
-                    child: Obx(() => homeController.loggedIn.value
-                        ?  InkWell(
-                             onTap: () { homeController.addWorkoutToList(workout.name);},
-                            child: Icon(Icons.add, color: Colors.red))
-                        : Container())
-
-                    //     child: InkWell(
-                    //         child: Icon(
-                    //   Icons.add,
-                    //   color: Colors.red,
-                    // ))
-                    //
-
-                    )
-              ],
-            ),
-            Container(
-              padding: EdgeInsets.fromLTRB(width! * 0.02, height! * 0.02, 0, 0),
-              child: Text(
-                "${workout.workout!.category!.toUpperCase()} | R: ${workout.workout!.level!} ",
-                style: TextStyle(color: Colors.white, fontSize: 12),
+                  Expanded(
+                      child: workout.status == "complete"
+                          ? Icon(Icons.done_all, color: Colors.red)
+                          : Icon(Icons.incomplete_circle_rounded,
+                              color: Colors.white))
+                ],
               ),
             ),
-            Container(
-              padding: EdgeInsets.fromLTRB(width! * 0.02, height! * 0.07, 0, 0),
-              child: Text(
-                workout.workout!.description!,
-                style: TextStyle(color: Colors.white70, fontSize: 10),
-                maxLines: 6,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            Obx(() => homeController.loggedIn.value ?
-            Container(
-              padding: EdgeInsets.fromLTRB(width! * 0.02, height! * 0.07, 0, 0),
-              child: InkWell(
-                onTap: () => homeController.addOrRemoveFavorite(workout.name),
-                child: Icon(
-                  Icons.favorite,
-                  color: homeController.userFavorites.contains(workout.name) ? Colors.red :Colors.white38,
-                ),
-              ),
-            )
-                :
-                Container()
-
-            )
-
-
-         ,
-
             // Container(
             //   padding: EdgeInsets.fromLTRB(width! * 0.02, height! * 0.07, 0, 0),
-            //   child: Text(
-            //     workout!.targets!.toString(),
-            //     style: TextStyle(color: Colors.white70, fontSize: 10),
-            //     maxLines: 6,
-            //     overflow: TextOverflow.ellipsis,
+            //   child: Column(
+            //       children: workout.sets.map((e) => Container(
+            //         child: Row(
+            //           children: [
+            //             Text(
+            //               e.rest!=null ? "Rest ${e.rest}" :"",
+            //               style: TextStyle(color: Colors.white70, fontSize: 10),
+            //               maxLines: 6,
+            //               overflow: TextOverflow.ellipsis,
+            //             ),
+            //             Text(
+            //               e.weight!=null ? "Weight ${e.weight}" :"",
+            //               style: TextStyle(color: Colors.white70, fontSize: 10),
+            //               maxLines: 6,
+            //               overflow: TextOverflow.ellipsis,
+            //             ),                        Text(
+            //               e.rep!=null ? "Rep ${e.rep}" :"",
+            //               style: TextStyle(color: Colors.white70, fontSize: 10),
+            //               maxLines: 6,
+            //               overflow: TextOverflow.ellipsis,
+            //             ),
+            //
+            //
+            //           ],
+            //         ),
+            //
+            //
+            //       )).toList()
             //   ),
-            // )
+            //
+            // ),
+            Container(
+              padding: EdgeInsets.fromLTRB(width! * 0.02, height! * 0.07, 0, 0),
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: workout.sets.length,
+                itemBuilder: (BuildContext context, int index) {
+                  final e = workout.sets[index];
+                  return Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Set ${index + 1}',
+                          style: TextStyle(color: Colors.white70, fontSize: 10),
+                          maxLines: 6,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        if (e.rest != null && e.rest != 0)
+                          Text(
+                            e.rest != null && e.rest != 0
+                                ? "Rest ${e.rest} s"
+                                : "",
+                            style:
+                                TextStyle(color: Colors.white70, fontSize: 10),
+                            maxLines: 6,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        if (e.weight != null && e.weight != 0)
+                          Text(
+                            e.weight != null && e.weight != 0
+                                ? "Weight ${e.weight} kg"
+                                : "",
+                            style:
+                                TextStyle(color: Colors.white70, fontSize: 10),
+                            maxLines: 6,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        if (e.rep != null && e.rep != 0)
+                          Text(
+                            e.rep != null && e.rep != 0 ? "Rep ${e.rep}" : "",
+                            style:
+                                TextStyle(color: Colors.white70, fontSize: 10),
+                            maxLines: 6,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        if (e.time != null && e.time != 0)
+                          Text(
+                            e.time != null && e.time != 0
+                                ? "Time ${e.time} s"
+                                : "",
+                            style:
+                                TextStyle(color: Colors.white70, fontSize: 10),
+                            maxLines: 6,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
+
+            Container(
+                padding:
+                    EdgeInsets.fromLTRB(width! * 0.02, height! * 0.07, 0, 0),
+                child: workout.rest != null && workout.rest != 0
+                    ? Text(
+                        "Rest after complete ${workout.rest.toString()} s",
+                        style: TextStyle(color: Colors.white70, fontSize: 10),
+                        maxLines: 6,
+                        overflow: TextOverflow.ellipsis,
+                      )
+                    : Container()),
+            Expanded(
+              child: Container(
+                padding:
+                    EdgeInsets.fromLTRB(width! * 0.02, height! * 0.07, 0, 0),
+                child: InkWell(
+                  // onTap: () => Get.to(PlanPage()),
+                  onTap: () async {
+                    Get.dialog(
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 40),
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(20),
+                                ),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(20.0),
+                                child: Material(
+                                  child: Column(
+                                    children: [
+                                      const SizedBox(height: 10),
+                                       Text(
+                                        workout.name,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      const SizedBox(height: 15),
+                                      const Text(
+                                        "Message Text",
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      const SizedBox(height: 20),
+                                      //Buttons
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: ElevatedButton(
+                                              child: const Text(
+                                                'NO',
+                                              ),
+                                              style: ElevatedButton.styleFrom(
+                                                minimumSize: const Size(0, 45),
+                                                primary: Colors.amber,
+                                                onPrimary: const Color(0xFFFFFFFF),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.circular(8),
+                                                ),
+                                              ),
+                                              onPressed: () {},
+                                            ),
+                                          ),
+                                          const SizedBox(width: 10),
+                                          Expanded(
+                                            child: ElevatedButton(
+                                              child: const Text(
+                                                'YES',
+                                              ),
+                                              style: ElevatedButton.styleFrom(
+                                                minimumSize: const Size(0, 45),
+                                                primary: Colors.amber,
+                                                onPrimary: const Color(0xFFFFFFFF),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.circular(8),
+                                                ),
+                                              ),
+                                              onPressed: () {},
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+
+                  },
+
+                  child: Icon(Icons.edit, color: Colors.red, fill: 0.2),
+                ),
+              ),
+            )
           ],
         ),
       ),

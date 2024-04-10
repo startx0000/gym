@@ -20,10 +20,10 @@ class ExerciseSet {
 
   factory ExerciseSet.fromJson(Map<String, dynamic> json) {
     return ExerciseSet(
-      time: json["time"],
-      rep: json["rep"],
-      weight: json["weight"],
-      rest: json["rest"],
+      time: json["time"]!=null ? json["time"] :0,
+      rep: json["rep"]!=null ?json["rep"] :0,
+      weight: json["weight"]!=null ? json["weight"] :0,
+      rest: json["rest"]!=null ? json["rest"] :0,
     );
   }
 

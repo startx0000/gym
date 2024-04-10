@@ -12,6 +12,7 @@ class PlanController extends GetxController {
 
   var isLoading = false.obs;
   var exercices = List<Exercise>.empty().obs;
+  var idPlan = "".obs;
   String token = Get.find<HomeController>().token.value;
   bool loggedIn = Get.find<HomeController>().loggedIn.value;
 
@@ -28,23 +29,43 @@ class PlanController extends GetxController {
       return;
     print("Calling for workoutplan");
     isLoading.value = true;
-    var response = await DioService()
-        .getWithBearer("$connectionUrlAuth/api/workout/workoutplan", token);
+    try {
+      var response = await DioService()
+          .getWithBearer("$connectionUrlAuth/api/workout/workoutplan", token);
 
-    if (response.statusCode == 200) {
-      print("Response workoutplan:  " + response.data);
-      WorkoutPlan workoutPlan = WorkoutPlan.fromJson(json.decode(response.data));
-      print("Workout plan ${workoutPlan.nameWorkout}");
-      exercices.clear;
-      exercices.addAll(workoutPlan.plan);
-
-    }
-    else{
-      print(response);
+      if (response.statusCode == 200) {
+        print("Response workoutplan:  " + response.data);
+        if (response.data != null && response.data
+            .toString()
+            .isNotEmpty) {
+          WorkoutPlan workoutPlan = WorkoutPlan.fromJson(
+              json.decode(response.data));
+          print("Workout plan ${workoutPlan.nameWorkout}");
+          exercices.clear;
+          exercices.addAll(workoutPlan.plan);
+          idPlan.value=workoutPlan.nameWorkout;
+        }
+      }
+      else {
+        print(response);
+      }
+    }catch(e,stacktrace) {
+      print(e);
+      print(stacktrace);
 
     }
     isLoading.value = false;
 
+  }
+
+  void onReorder(int oldIndex, int newIndex) {
+    if (newIndex > oldIndex) {
+      newIndex -= 1;
+    }
+    final item =exercices.removeAt(oldIndex);
+    exercices.insert(newIndex, item);
+    print("here");
+  
   }
 
 

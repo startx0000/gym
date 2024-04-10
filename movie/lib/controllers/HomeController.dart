@@ -5,6 +5,7 @@ import 'dart:math';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
+import 'package:movie/model/Exercise.dart';
 
 import '../conf/global.dart';
 import '../model/Workout.dart';
@@ -80,8 +81,36 @@ class HomeController extends GetxController {
     });
   }
 
-  addWorkoutToList(String? name) {
+  addWorkoutToList(String? name, {String? operation,String ? id,Exercise ? exercise}) async {
     dev.log('Adding workout $name to the list');
+    isLoading.value=true;
+
+    try {
+      Dio dio = Dio();
+      String url  = "$connectionUrlAuth/api/workout/addWorkoutToPlan";
+
+
+      Map<String, dynamic> data = {
+        "name": name
+      };
+      var response = await dio.post(
+        url,
+        data: exercise!=null ? exercise.toJson() : data,
+        options: Options(
+          headers: {
+            "Authorization": "Bearer ${token.value}",
+            "content-Type": "application/json",
+            "operation" : (operation==null || operation.isEmpty) ? "add" : operation,
+            "idKey": id
+          },
+        ),
+      );
+      print(response.data);
+    } on Exception catch (e) {
+
+    }
+    isLoading.value=false;
+
   }
 
   setUser(String name) {
