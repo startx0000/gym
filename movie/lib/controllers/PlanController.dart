@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:movie/controllers/HomeController.dart';
 import 'package:movie/model/WorkoutPlan.dart';
@@ -15,6 +16,17 @@ class PlanController extends GetxController {
   var idPlan = "".obs;
   String token = Get.find<HomeController>().token.value;
   bool loggedIn = Get.find<HomeController>().loggedIn.value;
+
+  RxBool completed = false.obs;
+  RxInt rest = 0.obs;
+
+  void updateRest(int value) {
+    rest.value = value;
+  }
+  void toggle() {
+    completed.toggle();
+    print("Complete value: ${completed.value}");
+  }
 
   @override
   void onInit() async {
@@ -67,6 +79,42 @@ class PlanController extends GetxController {
     print("here");
   
   }
+
+  void modify(Exercise exercise, {String? operation, String? status}) async {
+    var name = exercise.name;
+    completed.value ? exercise.status="complete" : exercise.status="YET";
+    exercise.rest=rest.value;
+    print('Adding workout $name to the list');
+    isLoading.value=true;
+
+    try {
+      Dio dio = Dio();
+      String url  = "$connectionUrlAuth/api/workout/addWorkoutToPlan";
+
+
+      Map<String, dynamic> data = {
+        "name": name
+      };
+      var response = await dio.post(
+        url,
+        data: exercise!=null ? exercise.toJson() : data,
+        options: Options(
+          headers: {
+            "Authorization": "Bearer ${token}",
+            "content-Type": "application/json",
+            "operation" : (operation==null || operation.isEmpty) ? "add" : operation,
+            "idKey": idPlan.value
+          },
+        ),
+      );
+      print(response.data);
+    } on Exception catch (e) {
+
+    }
+    isLoading.value=false;
+
+  }
+
 
 
 }

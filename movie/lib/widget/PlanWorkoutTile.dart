@@ -219,6 +219,8 @@ class PlanWorkoutTile extends StatelessWidget {
                 child: InkWell(
                   // onTap: () => Get.to(PlanPage()),
                   onTap: () async {
+                    workout.status == "complete" ? planController.completed.value=true : planController.completed.value=false;
+                    planController.rest.value = workout.rest;
                     Get.dialog(
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -241,12 +243,61 @@ class PlanWorkoutTile extends StatelessWidget {
                                        Text(
                                         workout.name,
                                         textAlign: TextAlign.center,
+                                           style: TextStyle(color: Colors.black, fontSize: 25)
                                       ),
                                       const SizedBox(height: 15),
-                                      const Text(
-                                        "Message Text",
-                                        textAlign: TextAlign.center,
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+
+                                        children: [
+                                          Expanded(
+                                            child: const Text(
+                                              "Completed",
+
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: Obx(
+                                                  () => Switch(
+                                                value: planController.completed.value,
+                                                onChanged: (value) => planController.toggle(),
+                                              ),
+                                            ),
+                                          ),const SizedBox(width: 24),
+                                        ],
                                       ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        const Expanded(
+                                          flex: 1,
+                                          child: Text(
+                                            "Rest",
+                                          ),
+                                        ),
+
+                                        Expanded(
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                            child: TextField(
+                                              keyboardType: TextInputType.number,
+                                              onChanged: (value) {
+                                                // Parse the value to double and update the controller
+                                                planController.updateRest(int.tryParse(value) ?? 0);
+                                              },
+                                              controller: TextEditingController(text: planController.rest.value.toString()), // Set initial value
+                                              decoration: InputDecoration(
+                                                hintText: 'Enter rest duration',
+                                                border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(width: 24)
+                                      ],
+                                    ),
+
+
                                       const SizedBox(height: 20),
                                       //Buttons
                                       Row(
@@ -254,7 +305,7 @@ class PlanWorkoutTile extends StatelessWidget {
                                           Expanded(
                                             child: ElevatedButton(
                                               child: const Text(
-                                                'NO',
+                                                'Close',
                                               ),
                                               style: ElevatedButton.styleFrom(
                                                 minimumSize: const Size(0, 45),
@@ -264,14 +315,16 @@ class PlanWorkoutTile extends StatelessWidget {
                                                   borderRadius: BorderRadius.circular(8),
                                                 ),
                                               ),
-                                              onPressed: () {},
+                                              onPressed: () {
+                                                Get.back();
+                                              },
                                             ),
                                           ),
                                           const SizedBox(width: 10),
                                           Expanded(
                                             child: ElevatedButton(
                                               child: const Text(
-                                                'YES',
+                                                'SAVE',
                                               ),
                                               style: ElevatedButton.styleFrom(
                                                 minimumSize: const Size(0, 45),
@@ -281,7 +334,12 @@ class PlanWorkoutTile extends StatelessWidget {
                                                   borderRadius: BorderRadius.circular(8),
                                                 ),
                                               ),
-                                              onPressed: () {},
+                                              onPressed: () {
+
+                                                planController.modify(workout,operation: "mod");
+                                                Get.back();
+
+                                              },
                                             ),
                                           ),
                                         ],
