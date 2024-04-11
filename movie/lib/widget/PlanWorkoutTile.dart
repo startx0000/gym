@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:movie/model/Exercise.dart';
@@ -52,18 +53,20 @@ class PlanWorkoutTile extends StatelessWidget {
         child: Container(
           height: height,
           //width: width!*0.35,
-
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
-              //   color: Colors.black,
-              image: DecorationImage(
-                  image: ResizeImage(
-                      NetworkImage(workout.workout.img != null &&
-                              workout.workout.img!.isNotEmpty
-                          ? '${homeController.connection}/video/${workout.workout!.img!}'
-                          : posterURL),
-                      width: 200,
-                      height: 300))),
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: CachedNetworkImage(
+            imageUrl: workout.workout.img != null && workout.workout.img!.isNotEmpty
+                ? '${homeController.connection}/video/${workout.workout!.img!}'
+                : posterURL,
+            width: 200,
+            height: 300,
+            placeholder: (context, url) => CircularProgressIndicator(), // Placeholder widget while image is loading
+            errorWidget: (context, url, error) => Icon(Icons.error), // Widget to display when image fails to load
+            fit: BoxFit.cover, // Adjusts how the image is inscribed inside the box
+          ),
+
         ),
       );
     }

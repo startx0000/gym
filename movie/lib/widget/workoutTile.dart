@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:movie/widget/WorkoutModPage.dart';
@@ -42,32 +43,51 @@ class WorkoutTile extends StatelessWidget {
             workout: workout,
             url: '${homeController.connection}/video/${workout.video}')),
         // onTap: () => Get.to(VideoPlayerExampleParameter(workout: workout,url: '${homeController.connection}/video/${workout.video}' )),
-
         child: Container(
           height: height,
-          //width: width!*0.35,
-          // child:  FadeInImage.assetNetwork(
-          //   width: 200 ,
-          //   height: 300,
-          //
-          //   placeholder: 'assets/loading.gif',
-          //   image: workout.img != null &&
-          //                       workout.img!.isNotEmpty
-          //                   ? '${homeController.connection}/video/${workout!.img!}'
-          //                   : posterURL,
-          // ),
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
-              //   color: Colors.black,
-              image: DecorationImage(
-                  image: ResizeImage(
-                      NetworkImage(workout.img != null &&
-                              workout.img!.isNotEmpty
-                          ? '${homeController.connection}/video/${workout!.img!}'
-                          : posterURL),
-                      width: 200,
-                      height: 300))),
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: CachedNetworkImage(
+            imageUrl: workout.img != null && workout.img!.isNotEmpty
+                ? '${homeController.connection}/video/${workout!.img!}'
+                : posterURL,
+            width: 200,
+            height: 300,
+            placeholder: (context, url) => SizedBox(
+              width: 3.0, // Adjust width as needed
+              height: 3.0, // Adjust height as needed
+              child: CircularProgressIndicator(),
+            ), // Placeholder widget while image is loading
+            errorWidget: (context, url, error) => Icon(Icons.error), // Widget to display when image fails to load
+            fit: BoxFit.cover, // Adjusts how the image is inscribed inside the box
+          ),
         ),
+        // child: Container(
+        //   height: height,
+        //   //width: width!*0.35,
+        //   // child:  FadeInImage.assetNetwork(
+        //   //   width: 200 ,
+        //   //   height: 300,
+        //   //
+        //   //   placeholder: 'assets/loading.gif',
+        //   //   image: workout.img != null &&
+        //   //                       workout.img!.isNotEmpty
+        //   //                   ? '${homeController.connection}/video/${workout!.img!}'
+        //   //                   : posterURL,
+        //   // ),
+        //   decoration: BoxDecoration(
+        //       borderRadius: BorderRadius.circular(16),
+        //       //   color: Colors.black,
+        //       image: DecorationImage(
+        //           image: ResizeImage(
+        //               NetworkImage(workout.img != null &&
+        //                       workout.img!.isNotEmpty
+        //                   ? '${homeController.connection}/video/${workout!.img!}'
+        //                   : posterURL),
+        //               width: 200,
+        //               height: 300))),
+        // ),
       );
     }
   }
