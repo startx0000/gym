@@ -21,6 +21,9 @@ class PlanController extends GetxController {
   RxBool completed = false.obs;
   RxInt rest = 0.obs;
   RxList<ExerciseSet> exerciseSets = <ExerciseSet>[].obs;
+  var selectedSet = 0.obs;
+
+
 
   void addExerciseSet(ExerciseSet set) {
     exerciseSets.add(set);
@@ -101,7 +104,12 @@ class PlanController extends GetxController {
     var name = exercise.name;
     completed.value ? exercise.status="complete" : exercise.status="YET";
     exercise.rest=rest.value;
-    exercise.sets=exerciseSets;
+
+    exercise.sets.clear();
+    for(ExerciseSet a in exerciseSets){
+      exercise.sets.add(a);
+
+    }
 
     print('Adding workout $name to the list');
     isLoading.value=true;
@@ -133,6 +141,51 @@ class PlanController extends GetxController {
     isLoading.value=false;
     print("end");
     exercices.value.map((e) => print(e.name));
+  }
+
+  void modifyAndReload(Exercise exercise, {required String operation}) async {
+    var name = exercise.name;
+    completed.value ? exercise.status="complete" : exercise.status="YET";
+    exercise.rest=rest.value;
+    exercise.sets.clear();
+    for(ExerciseSet a in exerciseSets){
+      exercise.sets.add(a);
+
+    }
+
+    print('Adding workout $name to the list');
+    isLoading.value=true;
+
+    try {
+      Dio dio = Dio();
+      String url  = "$connectionUrlAuth/api/workout/addWorkoutToPlan";
+
+
+      Map<String, dynamic> data = {
+        "name": name
+      };
+      var response = await dio.post(
+        url,
+        data: exercise!=null ? exercise.toJson() : data,
+        options: Options(
+          headers: {
+            "Authorization": "Bearer ${token}",
+            "content-Type": "application/json",
+            "operation" : (operation==null || operation.isEmpty) ? "add" : operation,
+            "idKey": idPlan.value
+          },
+        ),
+      );
+      print(response.data);
+    } on Exception catch (e) {
+
+    }
+    isLoading.value=false;
+    print("end");
+    exercices.value.map((e) => print(e.name));
+    await getWorkoutPlan();
+
+
   }
 
 

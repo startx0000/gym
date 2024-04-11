@@ -10,6 +10,7 @@ import '../controllers/HomeController.dart';
 import '../controllers/PlanController.dart';
 import '../model/ExerciseSet.dart';
 import '../model/Workout.dart';
+import 'PlanPage.dart';
 
 class PlanWorkoutTile extends StatelessWidget {
   PlanController planController = Get.find<PlanController>();
@@ -57,7 +58,8 @@ class PlanWorkoutTile extends StatelessWidget {
             borderRadius: BorderRadius.circular(16),
           ),
           child: CachedNetworkImage(
-            imageUrl: workout.workout.img != null && workout.workout.img!.isNotEmpty
+            imageUrl: workout.workout.img != null &&
+                    workout.workout.img!.isNotEmpty
                 ? '${homeController.connection}/video/${workout.workout!.img!}'
                 : posterURL,
             width: 200,
@@ -65,13 +67,15 @@ class PlanWorkoutTile extends StatelessWidget {
             placeholder: (context, url) => Container(
               width: 200,
               height: 300,
-              color: Colors.grey[200], // Placeholder color while image is loading
+              color:
+                  Colors.grey[200], // Placeholder color while image is loading
             ),
             // placeholder: (context, url) => CircularProgressIndicator(), // Placeholder widget while image is loading
-            errorWidget: (context, url, error) => Icon(Icons.error), // Widget to display when image fails to load
-            fit: BoxFit.cover, // Adjusts how the image is inscribed inside the box
+            errorWidget: (context, url, error) => Icon(Icons.error),
+            // Widget to display when image fails to load
+            fit: BoxFit
+                .cover, // Adjusts how the image is inscribed inside the box
           ),
-
         ),
       );
     }
@@ -232,7 +236,16 @@ class PlanWorkoutTile extends StatelessWidget {
                         ? planController.completed.value = true
                         : planController.completed.value = false;
                     planController.rest.value = workout.rest;
-                    planController.exerciseSets.value = workout.sets;
+                    planController.exerciseSets.clear();
+
+                    for(ExerciseSet a in workout.sets) {
+                     planController.exerciseSets.value.add(a.clone());
+                    }
+
+                    planController.selectedSet.value = 0;
+                    print("ex set: ${planController.exerciseSets}");
+
+
                     Get.dialog(
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -280,52 +293,141 @@ class PlanWorkoutTile extends StatelessWidget {
                                           const SizedBox(width: 24),
                                         ],
                                       ),
+
                                       Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
                                         children: [
                                           const Expanded(
-                                            flex: 1,
-                                            child: Text(
-                                              "Rest",
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  "Sets",
+                                                  style: TextStyle(
+                                                      fontSize: 12,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                              ],
                                             ),
                                           ),
                                           Expanded(
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 8.0),
-                                              child: TextField(
-                                                keyboardType:
-                                                    TextInputType.number,
-                                                onChanged: (value) {
-                                                  // Parse the value to double and update the controller
-                                                  planController.updateRest(
-                                                      int.tryParse(value) ?? 0);
-                                                },
-                                                controller:
-                                                    TextEditingController(
-                                                        text: planController
-                                                            .rest.value
-                                                            .toString()),
-                                                // Set initial value
-                                                decoration: InputDecoration(
-                                                  hintText:
-                                                      'Enter rest duration',
-                                                  border: OutlineInputBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10)),
-                                                ),
-                                              ),
+                                            child: PopupMenuButton<int>(
+                                              itemBuilder: (context) {
+                                                print("Exerices set: ${planController.exerciseSets}");
+                                                return List.generate(
+                                                  planController
+                                                      .exerciseSets.length,
+                                                  (index) => PopupMenuItem<int>(
+                                                    value: index,
+                                                    child: Text(
+                                                        'Exercise Set ${index + 1}'),
+                                                  ),
+                                                );
+                                              },
+                                              onSelected: (value) {
+                                                // Handle menu item selection
+                                                print(
+                                                    'Selected exercise set: ${value + 1}');
+                                                planController.selectedSet
+                                                    .value = value + 1;
+                                              },
                                             ),
                                           ),
-                                          const SizedBox(width: 24)
                                         ],
                                       ),
+                                      // Row(
+                                      //   mainAxisAlignment:
+                                      //       MainAxisAlignment.spaceEvenly,
+                                      //   children: [
+                                      //     const Expanded(
+                                      //       flex: 1,
+                                      //       child: Text(
+                                      //         "Rest",
+                                      //       ),
+                                      //     ),
+                                      //     Expanded(
+                                      //       child: Padding(
+                                      //         padding:
+                                      //             const EdgeInsets.symmetric(
+                                      //                 horizontal: 8.0),
+                                      //         child: TextField(
+                                      //           keyboardType:
+                                      //               TextInputType.number,
+                                      //           onChanged: (value) {
+                                      //             // Parse the value to double and update the controller
+                                      //             planController.updateRest(
+                                      //                 int.tryParse(value) ?? 0);
+                                      //           },
+                                      //           controller:
+                                      //               TextEditingController(
+                                      //                   text: planController
+                                      //                       .rest.value
+                                      //                       .toString()),
+                                      //           // Set initial value
+                                      //           decoration: InputDecoration(
+                                      //             hintText:
+                                      //                 'Enter rest duration',
+                                      //             border: OutlineInputBorder(
+                                      //                 borderRadius:
+                                      //                     BorderRadius.circular(
+                                      //                         10)),
+                                      //           ),
+                                      //         ),
+                                      //       ),
+                                      //     ),
+                                      //     const SizedBox(width: 24)
+                                      //   ],
+                                      // ),
 
                                       const SizedBox(height: 20),
-
+                                      Obx(() => planController
+                                                  .selectedSet.value !=
+                                              0
+                                          ? Row(
+                                              children: [
+                                                Text(
+                                                  "Set nr ${planController.selectedSet.value}",
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                Text("  Rep"),
+                                                Expanded(
+                                                  child: Padding(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal: 8.0),
+                                                    child: TextField(
+                                                      keyboardType:
+                                                          TextInputType.number,
+                                                      onChanged: (value) {
+                                                        planController.exerciseSets[planController.selectedSet.value-1].rep =
+                                                            int.tryParse(
+                                                                    value) ??
+                                                                0;
+                                                        // Parse the value to double and update the controller
+                                                        // planController.updateRest(
+                                                        //     int.tryParse(value) ?? 0);
+                                                      },
+                                                      controller:
+                                                          TextEditingController(
+                                                              text: planController.exerciseSets[planController.selectedSet.value-1].rep
+                                                                  .toString()),
+                                                      // Set initial value
+                                                      decoration:
+                                                          InputDecoration(
+                                                        hintText: 'Enter rep ',
+                                                        border: OutlineInputBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10)),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            )
+                                          : Container()),
                                       ElevatedButton(
                                         onPressed: () {
                                           planController.addExerciseSet(
@@ -337,58 +439,58 @@ class PlanWorkoutTile extends StatelessWidget {
                                         },
                                         child: Text('Add Set'),
                                       ),
-                                      Obx(() {
-                                        return Column(
-                                          children: planController.exerciseSets
-                                              .map((element) =>
-                                                  Row(
-                                                    children: [
-                                                      // Text("Rest ${element.rest.toString()}"),
-                                                      // Text("Time ${element.time.toString()}"),
-                                                      Text("Rep ${element.rep.toString()}"),
-                                                      Expanded(
-                                                        child: Padding(
-                                                          padding:
-                                                          const EdgeInsets.symmetric(
-                                                              horizontal: 8.0),
-                                                          child: TextField(
-                                                            keyboardType:
-                                                            TextInputType.number,
-                                                            onChanged: (value) {
-                                                              element.rep=int.tryParse(value) ?? 0;
-                                                              // Parse the value to double and update the controller
-                                                              // planController.updateRest(
-                                                              //     int.tryParse(value) ?? 0);
-                                                            },
-                                                            controller:
-                                                            TextEditingController(
-                                                                text: element.rep
-                                                                    .toString()),
-                                                            // Set initial value
-                                                            decoration: InputDecoration(
-                                                              hintText:
-                                                              'Enter rep ',
-                                                              border: OutlineInputBorder(
-                                                                  borderRadius:
-                                                                  BorderRadius.circular(
-                                                                      10)),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-
-                                                      // Text("Weight ${element.weight.toString()}"),
-                                                      IconButton(
-                                                        icon: Icon(Icons.delete),
-                                                        onPressed: () {
-                                                          planController.exerciseSets.remove(element);
-                                                        },)
-
-                                              ],
-                                                  ))
-                                              .toList(),
-                                        );
-                                      }),
+                                      // Obx(() {
+                                      //   return Column(
+                                      //     children: planController.exerciseSets
+                                      //         .map((element) =>
+                                      //             Row(
+                                      //               children: [
+                                      //                 // Text("Rest ${element.rest.toString()}"),
+                                      //                 // Text("Time ${element.time.toString()}"),
+                                      //                 Text("Rep ${element.rep.toString()}"),
+                                      //                 Expanded(
+                                      //                   child: Padding(
+                                      //                     padding:
+                                      //                     const EdgeInsets.symmetric(
+                                      //                         horizontal: 8.0),
+                                      //                     child: TextField(
+                                      //                       keyboardType:
+                                      //                       TextInputType.number,
+                                      //                       onChanged: (value) {
+                                      //                         element.rep=int.tryParse(value) ?? 0;
+                                      //                         // Parse the value to double and update the controller
+                                      //                         // planController.updateRest(
+                                      //                         //     int.tryParse(value) ?? 0);
+                                      //                       },
+                                      //                       controller:
+                                      //                       TextEditingController(
+                                      //                           text: element.rep
+                                      //                               .toString()),
+                                      //                       // Set initial value
+                                      //                       decoration: InputDecoration(
+                                      //                         hintText:
+                                      //                         'Enter rep ',
+                                      //                         border: OutlineInputBorder(
+                                      //                             borderRadius:
+                                      //                             BorderRadius.circular(
+                                      //                                 10)),
+                                      //                       ),
+                                      //                     ),
+                                      //                   ),
+                                      //                 ),
+                                      //
+                                      //                 // Text("Weight ${element.weight.toString()}"),
+                                      //                 IconButton(
+                                      //                   icon: Icon(Icons.delete),
+                                      //                   onPressed: () {
+                                      //                     planController.exerciseSets.remove(element);
+                                      //                   },)
+                                      //
+                                      //         ],
+                                      //             ))
+                                      //         .toList(),
+                                      //   );
+                                      // }),
 
                                       //Buttons
                                       Row(
@@ -429,10 +531,15 @@ class PlanWorkoutTile extends StatelessWidget {
                                                       BorderRadius.circular(8),
                                                 ),
                                               ),
-                                              onPressed: () {
-                                                planController.modify(workout,
+                                              onPressed: () async {
+                                                planController.modifyAndReload(workout,
                                                     operation: "mod");
+                                                planController
+                                                    .selectedSet.value = 0;
+
                                                 Get.back();
+
+                                                // Get.to(() => PlanPage());
                                               },
                                             ),
                                           ),

@@ -33,4 +33,12 @@ class ExerciseSet {
     "weight": weight,
     "rest": rest,
   };
+
+  ExerciseSet clone() {
+    return ExerciseSet(
+      time: this.time,
+      rep: this.rep,
+      weight: this.weight,
+      rest: this.rest,
+    );}
 }
