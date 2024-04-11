@@ -7,6 +7,7 @@ import 'package:movie/widget/old/video_test_parameter.dart';
 
 import '../controllers/HomeController.dart';
 import '../controllers/PlanController.dart';
+import '../model/ExerciseSet.dart';
 import '../model/Workout.dart';
 
 class PlanWorkoutTile extends StatelessWidget {
@@ -219,8 +220,11 @@ class PlanWorkoutTile extends StatelessWidget {
                 child: InkWell(
                   // onTap: () => Get.to(PlanPage()),
                   onTap: () async {
-                    workout.status == "complete" ? planController.completed.value=true : planController.completed.value=false;
+                    workout.status == "complete"
+                        ? planController.completed.value = true
+                        : planController.completed.value = false;
                     planController.rest.value = workout.rest;
+                    planController.exerciseSets.value = workout.sets;
                     Get.dialog(
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -240,65 +244,144 @@ class PlanWorkoutTile extends StatelessWidget {
                                   child: Column(
                                     children: [
                                       const SizedBox(height: 10),
-                                       Text(
-                                        workout.name,
-                                        textAlign: TextAlign.center,
-                                           style: TextStyle(color: Colors.black, fontSize: 25)
-                                      ),
+                                      Text(workout.name,
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 25)),
                                       const SizedBox(height: 15),
                                       Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
                                         children: [
                                           Expanded(
                                             child: const Text(
                                               "Completed",
-
                                             ),
                                           ),
                                           Expanded(
                                             child: Obx(
-                                                  () => Switch(
-                                                value: planController.completed.value,
-                                                onChanged: (value) => planController.toggle(),
+                                              () => Switch(
+                                                value: planController
+                                                    .completed.value,
+                                                onChanged: (value) =>
+                                                    planController.toggle(),
                                               ),
                                             ),
-                                          ),const SizedBox(width: 24),
+                                          ),
+                                          const SizedBox(width: 24),
                                         ],
                                       ),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        const Expanded(
-                                          flex: 1,
-                                          child: Text(
-                                            "Rest",
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          const Expanded(
+                                            flex: 1,
+                                            child: Text(
+                                              "Rest",
+                                            ),
                                           ),
-                                        ),
-
-                                        Expanded(
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                                            child: TextField(
-                                              keyboardType: TextInputType.number,
-                                              onChanged: (value) {
-                                                // Parse the value to double and update the controller
-                                                planController.updateRest(int.tryParse(value) ?? 0);
-                                              },
-                                              controller: TextEditingController(text: planController.rest.value.toString()), // Set initial value
-                                              decoration: InputDecoration(
-                                                hintText: 'Enter rest duration',
-                                                border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                                          Expanded(
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 8.0),
+                                              child: TextField(
+                                                keyboardType:
+                                                    TextInputType.number,
+                                                onChanged: (value) {
+                                                  // Parse the value to double and update the controller
+                                                  planController.updateRest(
+                                                      int.tryParse(value) ?? 0);
+                                                },
+                                                controller:
+                                                    TextEditingController(
+                                                        text: planController
+                                                            .rest.value
+                                                            .toString()),
+                                                // Set initial value
+                                                decoration: InputDecoration(
+                                                  hintText:
+                                                      'Enter rest duration',
+                                                  border: OutlineInputBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10)),
+                                                ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                        const SizedBox(width: 24)
-                                      ],
-                                    ),
-
+                                          const SizedBox(width: 24)
+                                        ],
+                                      ),
 
                                       const SizedBox(height: 20),
+
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          planController.addExerciseSet(
+                                              ExerciseSet(
+                                                  time: 0,
+                                                  rep: 0,
+                                                  rest: 0,
+                                                  weight: 0));
+                                        },
+                                        child: Text('Add Set'),
+                                      ),
+                                      Obx(() {
+                                        return Column(
+                                          children: planController.exerciseSets
+                                              .map((element) =>
+                                                  Row(
+                                                    children: [
+                                                      // Text("Rest ${element.rest.toString()}"),
+                                                      // Text("Time ${element.time.toString()}"),
+                                                      Text("Rep ${element.rep.toString()}"),
+                                                      Expanded(
+                                                        child: Padding(
+                                                          padding:
+                                                          const EdgeInsets.symmetric(
+                                                              horizontal: 8.0),
+                                                          child: TextField(
+                                                            keyboardType:
+                                                            TextInputType.number,
+                                                            onChanged: (value) {
+                                                              element.rep=int.tryParse(value) ?? 0;
+                                                              // Parse the value to double and update the controller
+                                                              // planController.updateRest(
+                                                              //     int.tryParse(value) ?? 0);
+                                                            },
+                                                            controller:
+                                                            TextEditingController(
+                                                                text: element.rep
+                                                                    .toString()),
+                                                            // Set initial value
+                                                            decoration: InputDecoration(
+                                                              hintText:
+                                                              'Enter rep ',
+                                                              border: OutlineInputBorder(
+                                                                  borderRadius:
+                                                                  BorderRadius.circular(
+                                                                      10)),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+
+                                                      // Text("Weight ${element.weight.toString()}"),
+                                                      IconButton(
+                                                        icon: Icon(Icons.delete),
+                                                        onPressed: () {
+                                                          planController.exerciseSets.remove(element);
+                                                        },)
+
+                                              ],
+                                                  ))
+                                              .toList(),
+                                        );
+                                      }),
+
                                       //Buttons
                                       Row(
                                         children: [
@@ -310,9 +393,11 @@ class PlanWorkoutTile extends StatelessWidget {
                                               style: ElevatedButton.styleFrom(
                                                 minimumSize: const Size(0, 45),
                                                 primary: Colors.amber,
-                                                onPrimary: const Color(0xFFFFFFFF),
+                                                onPrimary:
+                                                    const Color(0xFFFFFFFF),
                                                 shape: RoundedRectangleBorder(
-                                                  borderRadius: BorderRadius.circular(8),
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
                                                 ),
                                               ),
                                               onPressed: () {
@@ -329,16 +414,17 @@ class PlanWorkoutTile extends StatelessWidget {
                                               style: ElevatedButton.styleFrom(
                                                 minimumSize: const Size(0, 45),
                                                 primary: Colors.amber,
-                                                onPrimary: const Color(0xFFFFFFFF),
+                                                onPrimary:
+                                                    const Color(0xFFFFFFFF),
                                                 shape: RoundedRectangleBorder(
-                                                  borderRadius: BorderRadius.circular(8),
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
                                                 ),
                                               ),
                                               onPressed: () {
-
-                                                planController.modify(workout,operation: "mod");
+                                                planController.modify(workout,
+                                                    operation: "mod");
                                                 Get.back();
-
                                               },
                                             ),
                                           ),
@@ -353,7 +439,6 @@ class PlanWorkoutTile extends StatelessWidget {
                         ],
                       ),
                     );
-
                   },
 
                   child: Icon(Icons.edit, color: Colors.red, fill: 0.2),

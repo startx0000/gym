@@ -7,6 +7,7 @@ import 'package:movie/model/WorkoutPlan.dart';
 
 import '../conf/global.dart';
 import '../model/Exercise.dart';
+import '../model/ExerciseSet.dart';
 import '../services/DioService.dart';
 
 class PlanController extends GetxController {
@@ -19,6 +20,21 @@ class PlanController extends GetxController {
 
   RxBool completed = false.obs;
   RxInt rest = 0.obs;
+  RxList<ExerciseSet> exerciseSets = <ExerciseSet>[].obs;
+
+  void addExerciseSet(ExerciseSet set) {
+    exerciseSets.add(set);
+  }
+
+  void removeExerciseSet(int index) {
+    exerciseSets.removeAt(index);
+  }
+
+  void updateExerciseSet(int index, ExerciseSet set) {
+    exerciseSets[index] = set;
+  }
+
+
 
   void updateRest(int value) {
     rest.value = value;
@@ -68,6 +84,7 @@ class PlanController extends GetxController {
     }
     isLoading.value = false;
 
+
   }
 
   void onReorder(int oldIndex, int newIndex) {
@@ -84,6 +101,8 @@ class PlanController extends GetxController {
     var name = exercise.name;
     completed.value ? exercise.status="complete" : exercise.status="YET";
     exercise.rest=rest.value;
+    exercise.sets=exerciseSets;
+
     print('Adding workout $name to the list');
     isLoading.value=true;
 
@@ -112,7 +131,8 @@ class PlanController extends GetxController {
 
     }
     isLoading.value=false;
-
+    print("end");
+    exercices.value.map((e) => print(e.name));
   }
 
 
