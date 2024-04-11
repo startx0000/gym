@@ -263,17 +263,21 @@ class HomeController extends GetxController {
     }
 
     changeLoading(true);
-    var response =
-        await DioService().get('${connection.value}/workout/all${query}');
-    if (response.statusCode == 200) {
-      workouts.clear();
-      response.data.forEach((element) {
-        Workout single = Workout.fromJson(element);
-        if(favUser.value == false || (favUser.value==true && userFavorites.contains(single.name)))
-          workouts.add(single);
-      });
-    } else {
-      errorMsg.value = "Errors";
+    try {
+      var response =
+              await DioService().get('${connection.value}/workout/all${query}');
+      if (response.statusCode == 200) {
+            workouts.clear();
+            response.data.forEach((element) {
+              Workout single = Workout.fromJson(element);
+              if(favUser.value == false || (favUser.value==true && userFavorites.contains(single.name)))
+                workouts.add(single);
+            });
+          } else {
+            errorMsg.value = "Errors";
+          }
+    } catch (e) {
+      print(e);
     }
 
     changeLoading(false);

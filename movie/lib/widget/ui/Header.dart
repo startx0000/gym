@@ -31,14 +31,19 @@ class Header extends StatelessWidget {
                 ),
                 InkWell(
                   onTap: () => Navigator.pop(context),
-                  child: const Icon(
-                    Icons.arrow_back_rounded,
-                    color: Colors.red,
+                  child: Row(
+                    children: [
+                      const Icon(
+                        Icons.arrow_back_rounded,
+                        color: Colors.red,
+                      ),
+                      SizedBox(
+                        width: _width * 0.3,
+                      ),
+                    ],
                   ),
                 ),
-                SizedBox(
-                  width: _width * 0.3,
-                ),
+
                  Text(
                   "$title",
                   style: const TextStyle(

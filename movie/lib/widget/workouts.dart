@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:ui';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -50,18 +51,34 @@ class Workouts extends StatelessWidget {
       height: _height,
       width: _width,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          image: DecorationImage(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: CachedNetworkImage(
+        imageUrl: _background1,
+        placeholder: (context, url) => Container(
+          width: 200,
+          height: 300,
+          color: Colors.grey[200], // Placeholder color while image is loading
+        ),
+        errorWidget: (context, url, error) => Container(
+          width: 200,
+          height: 300,
+          color: Colors.grey[200], // Widget to display when image fails to load
+        ),
+        imageBuilder: (context, imageProvider) => Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            image: DecorationImage(
+              image: imageProvider,
               fit: BoxFit.cover,
-              image: ResizeImage(
-                NetworkImage(_background1),
-                width: 200,
-                height: 300,
-              ))),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 15.0, sigmaY: 15.0),
-        child: Container(
-          decoration: BoxDecoration(color: Colors.black.withOpacity(0.2)),
+            ),
+          ),
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 15.0, sigmaY: 15.0),
+            child: Container(
+              decoration: BoxDecoration(color: Colors.black.withOpacity(0.2)),
+            ),
+          ),
         ),
       ),
     );

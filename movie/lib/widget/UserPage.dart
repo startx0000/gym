@@ -113,9 +113,18 @@ class _UserPageState extends State<UserPage> {
                             ),
                             InkWell(
                               onTap: () => Navigator.pop(context),
-                              child: const Icon(
-                                Icons.arrow_back_rounded,
-                                color: Colors.red,
+                              child: Row(
+                                children: [
+                                  const Icon(
+                                    Icons.arrow_back_rounded,
+                                    color: Colors.red,
+                                  ),
+                                  Container(
+                                    child: SizedBox(
+                                      width: _width * 0.3,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                             // SizedBox(
@@ -133,9 +142,8 @@ class _UserPageState extends State<UserPage> {
                             //     ),
                             //   ),
                             // ),
-                            SizedBox(
-                              width: _width * 0.3,
-                            ),
+
+
                             Expanded(
                               child: Container(
                                 child: Obx(

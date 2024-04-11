@@ -62,7 +62,12 @@ class PlanWorkoutTile extends StatelessWidget {
                 : posterURL,
             width: 200,
             height: 300,
-            placeholder: (context, url) => CircularProgressIndicator(), // Placeholder widget while image is loading
+            placeholder: (context, url) => Container(
+              width: 200,
+              height: 300,
+              color: Colors.grey[200], // Placeholder color while image is loading
+            ),
+            // placeholder: (context, url) => CircularProgressIndicator(), // Placeholder widget while image is loading
             errorWidget: (context, url, error) => Icon(Icons.error), // Widget to display when image fails to load
             fit: BoxFit.cover, // Adjusts how the image is inscribed inside the box
           ),
