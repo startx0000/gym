@@ -296,15 +296,17 @@ class PlanWorkoutTile extends StatelessWidget {
 
                                       Row(
                                         children: [
-                                          const Expanded(
+                                           Expanded(
                                             child: Row(
                                               children: [
-                                                Text(
-                                                  "Sets",
-                                                  style: TextStyle(
-                                                      fontSize: 12,
-                                                      fontWeight:
-                                                          FontWeight.bold),
+                                                Obx(
+                                          ()=> Text(
+                                                    planController.selectedSet.value==0 ? "Sets" : "Set Nr ${planController.selectedSet.value}",
+                                                    style: const TextStyle(
+                                                        fontSize: 12,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
                                                 ),
                                               ],
                                             ),
@@ -319,7 +321,7 @@ class PlanWorkoutTile extends StatelessWidget {
                                                   (index) => PopupMenuItem<int>(
                                                     value: index,
                                                     child: Text(
-                                                        'Exercise Set ${index + 1}'),
+                                                        'Set ${index + 1}'),
                                                   ),
                                                 );
                                               },
@@ -384,12 +386,7 @@ class PlanWorkoutTile extends StatelessWidget {
                                               0
                                           ? Row(
                                               children: [
-                                                Text(
-                                                  "Set nr ${planController.selectedSet.value}",
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
+
                                                 Text("  Rep"),
                                                 Expanded(
                                                   child: Padding(
