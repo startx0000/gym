@@ -392,38 +392,38 @@ class PlanWorkoutTile extends StatelessWidget {
                                               children: [
                                                 Text(
                                                     "${planController.categoryWorkoutSelected.value}"),
-                                                // Expanded(
-                                                //   child:
-                                                //       PopupMenuButton<String>(
-                                                //     initialValue: planController
-                                                //         .categoryWorkoutSelected
-                                                //         .value,
-                                                //     onSelected: (value) =>
-                                                //         planController
-                                                //             .categoryWorkoutSelected
-                                                //             .value = value,
-                                                //     itemBuilder:
-                                                //         (BuildContext context) {
-                                                //       return <PopupMenuEntry<
-                                                //           String>>[
-                                                //         ...planController
-                                                //             .categoryWorkout
-                                                //             .map((element) =>
-                                                //                 PopupMenuItem(
-                                                //                   value:
-                                                //                       element,
-                                                //                   child: Text(
-                                                //                     element,
-                                                //                     style: TextStyle(
-                                                //                         color: Colors
-                                                //                             .white),
-                                                //                   ),
-                                                //                 ))
-                                                //             .toList()
-                                                //       ];
-                                                //     },
-                                                //   ),
-                                                // ),
+                                                Expanded(
+                                                  child:
+                                                      PopupMenuButton<String>(
+                                                    initialValue: planController
+                                                        .categoryWorkoutSelected
+                                                        .value,
+                                                    onSelected: (value) =>
+                                                        planController
+                                                            .categoryWorkoutSelected
+                                                            .value = value,
+                                                    itemBuilder:
+                                                        (BuildContext context) {
+                                                      return <PopupMenuEntry<
+                                                          String>>[
+                                                        ...planController
+                                                            .categoryWorkout
+                                                            .map((element) =>
+                                                                PopupMenuItem(
+                                                                  value:
+                                                                      element,
+                                                                  child: Text(
+                                                                    element,
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .white),
+                                                                  ),
+                                                                ))
+                                                            .toList()
+                                                      ];
+                                                    },
+                                                  ),
+                                                ),
                                                 Expanded(
                                                   child: Padding(
                                                     padding: const EdgeInsets
@@ -433,6 +433,7 @@ class PlanWorkoutTile extends StatelessWidget {
                                                       keyboardType:
                                                           TextInputType.number,
                                                       onChanged: (value) {
+                                                        if(planController.categoryWorkoutSelected.value =="Rep"){
                                                         planController
                                                             .exerciseSets[
                                                                 planController
@@ -441,24 +442,58 @@ class PlanWorkoutTile extends StatelessWidget {
                                                                     1]
                                                             .rep = int.tryParse(
                                                                 value) ??
-                                                            0;
+                                                            0;}
+                                                        if(planController.categoryWorkoutSelected.value =="Weight"){
+                                                          planController
+                                                              .exerciseSets[
+                                                          planController
+                                                              .selectedSet
+                                                              .value -
+                                                              1]
+                                                              .weight = int.tryParse(
+                                                              value) ??
+                                                              0;}
+
+                                                        if(planController.categoryWorkoutSelected.value =="Time"){
+                                                          planController
+                                                              .exerciseSets[
+                                                          planController
+                                                              .selectedSet
+                                                              .value -
+                                                              1]
+                                                              .time = int.tryParse(
+                                                              value) ??
+                                                              0;}
+
+                                                        if(planController.categoryWorkoutSelected.value =="Rest"){
+                                                          planController
+                                                              .exerciseSets[
+                                                          planController
+                                                              .selectedSet
+                                                              .value -
+                                                              1]
+                                                              .rest = int.tryParse(
+                                                              value) ??
+                                                              0;}
+
                                                         // Parse the value to double and update the controller
                                                         // planController.updateRest(
                                                         //     int.tryParse(value) ?? 0);
                                                       },
                                                       controller: TextEditingController(
-                                                          text: planController
-                                                              .exerciseSets[
-                                                                  planController
-                                                                          .selectedSet
-                                                                          .value -
-                                                                      1]
-                                                              .rep
-                                                              .toString()),
+                                                          text:  planController.categoryWorkoutSelected.value == "Rep"
+                                                              ? planController.exerciseSets[planController.selectedSet.value - 1].rep.toString()
+                                                              : planController.categoryWorkoutSelected.value == "Time"
+                                                              ? planController.exerciseSets[planController.selectedSet.value - 1].time.toString()
+                                                              : planController.categoryWorkoutSelected.value == "Rest"
+                                                              ? planController.exerciseSets[planController.selectedSet.value - 1].rest.toString()
+                                                              : planController.exerciseSets[planController.selectedSet.value - 1].weight.toString()
+
+                                                      ),
                                                       // Set initial value
                                                       decoration:
                                                           InputDecoration(
-                                                        hintText: 'Enter rep ',
+                                                        hintText: 'Enter value ',
                                                         border: OutlineInputBorder(
                                                             borderRadius:
                                                                 BorderRadius
