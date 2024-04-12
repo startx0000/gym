@@ -238,13 +238,12 @@ class PlanWorkoutTile extends StatelessWidget {
                     planController.rest.value = workout.rest;
                     planController.exerciseSets.clear();
 
-                    for(ExerciseSet a in workout.sets) {
-                     planController.exerciseSets.value.add(a.clone());
+                    for (ExerciseSet a in workout.sets) {
+                      planController.exerciseSets.value.add(a.clone());
                     }
 
                     planController.selectedSet.value = 0;
                     print("ex set: ${planController.exerciseSets}");
-
 
                     Get.dialog(
                       Column(
@@ -296,12 +295,16 @@ class PlanWorkoutTile extends StatelessWidget {
 
                                       Row(
                                         children: [
-                                           Expanded(
+                                          Expanded(
                                             child: Row(
                                               children: [
                                                 Obx(
-                                          ()=> Text(
-                                                    planController.selectedSet.value==0 ? "Sets" : "Set Nr ${planController.selectedSet.value}",
+                                                  () => Text(
+                                                    planController.selectedSet
+                                                                .value ==
+                                                            0
+                                                        ? "Sets"
+                                                        : "Set Nr ${planController.selectedSet.value}",
                                                     style: const TextStyle(
                                                         fontSize: 12,
                                                         fontWeight:
@@ -314,7 +317,8 @@ class PlanWorkoutTile extends StatelessWidget {
                                           Expanded(
                                             child: PopupMenuButton<int>(
                                               itemBuilder: (context) {
-                                                print("Exerices set: ${planController.exerciseSets}");
+                                                print(
+                                                    "Exerices set: ${planController.exerciseSets}");
                                                 return List.generate(
                                                   planController
                                                       .exerciseSets.length,
@@ -386,8 +390,40 @@ class PlanWorkoutTile extends StatelessWidget {
                                               0
                                           ? Row(
                                               children: [
-
-                                                Text("  Rep"),
+                                                Text(
+                                                    "${planController.categoryWorkoutSelected.value}"),
+                                                // Expanded(
+                                                //   child:
+                                                //       PopupMenuButton<String>(
+                                                //     initialValue: planController
+                                                //         .categoryWorkoutSelected
+                                                //         .value,
+                                                //     onSelected: (value) =>
+                                                //         planController
+                                                //             .categoryWorkoutSelected
+                                                //             .value = value,
+                                                //     itemBuilder:
+                                                //         (BuildContext context) {
+                                                //       return <PopupMenuEntry<
+                                                //           String>>[
+                                                //         ...planController
+                                                //             .categoryWorkout
+                                                //             .map((element) =>
+                                                //                 PopupMenuItem(
+                                                //                   value:
+                                                //                       element,
+                                                //                   child: Text(
+                                                //                     element,
+                                                //                     style: TextStyle(
+                                                //                         color: Colors
+                                                //                             .white),
+                                                //                   ),
+                                                //                 ))
+                                                //             .toList()
+                                                //       ];
+                                                //     },
+                                                //   ),
+                                                // ),
                                                 Expanded(
                                                   child: Padding(
                                                     padding: const EdgeInsets
@@ -397,18 +433,28 @@ class PlanWorkoutTile extends StatelessWidget {
                                                       keyboardType:
                                                           TextInputType.number,
                                                       onChanged: (value) {
-                                                        planController.exerciseSets[planController.selectedSet.value-1].rep =
-                                                            int.tryParse(
-                                                                    value) ??
-                                                                0;
+                                                        planController
+                                                            .exerciseSets[
+                                                                planController
+                                                                        .selectedSet
+                                                                        .value -
+                                                                    1]
+                                                            .rep = int.tryParse(
+                                                                value) ??
+                                                            0;
                                                         // Parse the value to double and update the controller
                                                         // planController.updateRest(
                                                         //     int.tryParse(value) ?? 0);
                                                       },
-                                                      controller:
-                                                          TextEditingController(
-                                                              text: planController.exerciseSets[planController.selectedSet.value-1].rep
-                                                                  .toString()),
+                                                      controller: TextEditingController(
+                                                          text: planController
+                                                              .exerciseSets[
+                                                                  planController
+                                                                          .selectedSet
+                                                                          .value -
+                                                                      1]
+                                                              .rep
+                                                              .toString()),
                                                       // Set initial value
                                                       decoration:
                                                           InputDecoration(
@@ -422,6 +468,21 @@ class PlanWorkoutTile extends StatelessWidget {
                                                     ),
                                                   ),
                                                 ),
+                                                Expanded(
+                                                  child: IconButton(
+                                                                icon: Icon(Icons.delete),
+                                                                onPressed: () {
+                                                                  print("here");
+                                                                  int index = planController
+                                                                      .selectedSet.value -1;
+                                                                  print("Index is $index");
+                                                                  planController.selectedSet.value=0;
+                                                                  print("Controller selectedSet ${planController.selectedSet.value}");
+                                                                  print("Index is $index");
+                                                                  planController.exerciseSets.removeAt(index);
+
+                                                                },),
+                                                )
                                               ],
                                             )
                                           : Container()),
@@ -529,7 +590,8 @@ class PlanWorkoutTile extends StatelessWidget {
                                                 ),
                                               ),
                                               onPressed: () async {
-                                                planController.modifyAndReload(workout,
+                                                planController.modifyAndReload(
+                                                    workout,
                                                     operation: "mod");
                                                 planController
                                                     .selectedSet.value = 0;

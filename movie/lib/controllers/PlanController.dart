@@ -23,6 +23,10 @@ class PlanController extends GetxController {
   RxList<ExerciseSet> exerciseSets = <ExerciseSet>[].obs;
   var selectedSet = 0.obs;
 
+  var categoryWorkout = ["Rep", "Time", "Weight","Rest"].obs;
+
+  var categoryWorkoutSelected = 'Rep'.obs;
+
 
 
   void addExerciseSet(ExerciseSet set) {
@@ -177,13 +181,16 @@ class PlanController extends GetxController {
         ),
       );
       print(response.data);
+
+      // print("calling workoutPlan");
+      // exercices.value.map((e) => print(e.name));
+      // await getWorkoutPlan();
+
     } on Exception catch (e) {
 
     }
     isLoading.value=false;
-    print("end");
-    exercices.value.map((e) => print(e.name));
-    await getWorkoutPlan();
+
 
 
   }
