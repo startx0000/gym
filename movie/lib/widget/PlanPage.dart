@@ -199,38 +199,60 @@ class PlanPage extends StatelessWidget {
                   color: Colors.black26,
                   borderRadius: BorderRadius.circular(20.0)),
               child: InkWell(
-                onTap: () async => {
-                  Get.dialog(
-                      Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 40),
-                                child: Container(
-                                    decoration: const BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(20),
+                onTap: () async  {
+
+                  planController.saveWorkoutName.value="";
+
+                  Get.dialog(Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 40),
+                            child: Container(
+                                decoration: const BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(20),
+                                  ),
+                                ),
+                                child: Padding(
+                                    padding: const EdgeInsets.all(20.0),
+                                    child: Material(
+                                        child: Column(children: [
+                                      const SizedBox(height: 10),
+                                      Text(
+                                          "Workout plan ${planController.idPlan.value}",
+                                          textAlign: TextAlign.center,
+                                          style: const TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 20)),
+                                      const SizedBox(height: 15),
+                                      TextField(
+                                          keyboardType: TextInputType.text,
+                                          onChanged: (value) => planController
+                                              .saveWorkoutName.value = value,
+                                          controller: TextEditingController(
+                                              text: planController
+                                                  .saveWorkoutName.value),
+                                          decoration: InputDecoration(
+                                            hintText: 'Enter workout plane name ',
+                                            border: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(10)),
+                                          )),
+                                        Center(
+                                          child: IconButton(
+                                          icon: Icon(Icons.save),
+                                          onPressed: () async {
+                                            planController.saveWorkoutPlan();
+                                            Get.back();
+                                          },
                                       ),
-                                    ),
-                                    child: Padding(
-                                        padding: const EdgeInsets.all(20.0),
-                                        child: Material(
-                                            child: Column(
-                                                children: [
-                                                  const SizedBox(height: 10),
-                                                  Text("Workout plan ${planController.idPlan.value}",
-                                                      textAlign: TextAlign.center,
-                                                      style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontSize: 25)),
-                                                  const SizedBox(height: 15),
-                                                ])))))])
+                                        )
+                                    ])))))
+                      ])
 
-
-                  )
-
-
+                      );
                 },
                 child: const Icon(
                   Icons.save_alt,

@@ -27,6 +27,7 @@ class PlanController extends GetxController {
 
   var categoryWorkoutSelected = 'Rep'.obs;
 
+  var saveWorkoutName ="".obs;
 
 
   void addExerciseSet(ExerciseSet set) {
@@ -62,6 +63,7 @@ class PlanController extends GetxController {
   getWorkoutPlan() async {
     if(!loggedIn)
       return;
+    //retrieve the idPlan from homecontrollor
     print("Calling for workoutplan");
     isLoading.value = true;
     try {
@@ -190,6 +192,39 @@ class PlanController extends GetxController {
 
     }
     isLoading.value=false;
+
+
+
+  }
+
+  void saveWorkoutPlan() async {
+
+    print("Saving plan id ${idPlan.value} with the following name ${saveWorkoutName.value}");
+
+    try {
+      Dio dio = Dio();
+      String url  = "$connectionUrlAuth/api/workout/savePlan";
+
+
+      Map<String, dynamic> data = {
+        "name": saveWorkoutName.value,
+        "idPlan" : idPlan.value
+      };
+      var response = await dio.post(
+        url,
+        data: data,
+        options: Options(
+          headers: {
+            "Authorization": "Bearer ${token}",
+            "content-Type": "application/json",
+          },
+        ),
+      );
+      print(response.data);
+
+    } on Exception catch (e) {
+      print(e);
+    }
 
 
 
