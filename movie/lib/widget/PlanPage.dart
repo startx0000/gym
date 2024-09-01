@@ -31,7 +31,7 @@ class PlanPage extends StatelessWidget {
         child: Stack(
           alignment: Alignment.center,
           children: [
-            Background(backgroundName: "bb1.png"),
+            Background(backgroundName: "background1.jpg"),
             Container(
               padding: EdgeInsets.fromLTRB(0, _height * 0.06, 0, 0),
               width: _width * 0.88,

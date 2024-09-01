@@ -1,3 +1,3 @@
-const String connectionUrl = "https://780c-93-35-222-121.ngrok-free.app";
-const String connectionUrlAuth = "https://6310-93-35-222-121.ngrok-free.app";
+const String connectionUrl = "https://e75f-93-35-217-45.ngrok-free.app";
+const String connectionUrlAuth = "https://e75f-93-35-217-45.ngrok-free.app";
 

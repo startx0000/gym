@@ -64,7 +64,8 @@ class HomeController extends GetxController {
   Future<void> getUserFavorites() async {
     var favs = await DioService()
         .getWithBearer("$connectionUrlAuth/api/workout/favorites", token.value);
-    print("Response favorites " + favs.data);
+
+    // print("Response favorites " + favs.data);
     setUserFavorites(favs.data);
 
   }

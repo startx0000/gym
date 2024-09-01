@@ -5,12 +5,15 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:movie/widget/CalendarPage.dart';
 import 'package:movie/widget/ui/Background.dart';
 import 'package:movie/widget/workouts.dart';
 
 import '../conf/global.dart';
 import '../controllers/HomeController.dart';
+import '../icons/my_flutter_app_icons.dart';
 import '../services/DioService.dart';
+import 'UploadPage.dart';
 
 const List<String> scopes = <String>[
   'email',
@@ -87,7 +90,7 @@ class _UserPageState extends State<UserPage> {
       body: Stack(
         alignment: Alignment.center,
         children: [
-          Background(backgroundName: "bb1.png"),
+          Background(backgroundName: "background1.jpg"),
           Container(
             padding: EdgeInsets.fromLTRB(0, _height * 0.06, 0, 0),
             width: _width * 0.88,
@@ -171,7 +174,8 @@ class _UserPageState extends State<UserPage> {
                     ],
                   ),
                 ),
-                Expanded(child: _areaWidget())
+                Expanded(child: _areaWidget()),
+                _topDownWidget()
               ],
             ),
           )
@@ -302,4 +306,109 @@ class _UserPageState extends State<UserPage> {
     _googleSignIn.signOut();
     homeController.setLoggedIn(false);
   }
+
+
+  _topDownWidget() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Expanded(
+          child: Padding(
+            padding: EdgeInsets.all(_height * 0.01),
+            child: Container(
+              width: _width * 0.2,
+              height: _height * 0.08,
+              decoration: BoxDecoration(
+                  color: Colors.black26,
+                  borderRadius: BorderRadius.circular(20.0)),
+              child: InkWell(
+                onTap: () => Get.to(UploadPage()),
+                child: Icon(Icons.upload, color: Colors.red, fill: 0.2),
+              ),
+            ),
+          ),
+        ),
+        Expanded(
+          child: Padding(
+            padding: EdgeInsets.all(_height * 0.01),
+            child: Container(
+              width: _width * 0.2,
+              height: _height * 0.08,
+              decoration: BoxDecoration(
+                  color: Colors.black26,
+                  borderRadius: BorderRadius.circular(20.0)),
+              child:  InkWell(
+                onTap: () =>  Get.to(()=>CalendarPage()),
+                child:  Icon(
+                  Icons.calendar_month_rounded,
+                  color: Colors.red,
+                  fill: 0.2,
+                ),
+              )
+            ),
+          ),
+        ),
+        Expanded(
+          child: Padding(
+            padding: EdgeInsets.all(_height * 0.01),
+            child: Container(
+              width: _width * 0.2,
+              height: _height * 0.08,
+              decoration: BoxDecoration(
+                  color: Colors.black26,
+                  borderRadius: BorderRadius.circular(20.0)),
+              child: InkWell(
+                onTap: () => Get.to(UserPage()),
+                child: Icon(
+                  Icons.login_rounded,
+                  color: Colors.red,
+                ),
+              ),
+            ),
+          ),
+        ),
+        Expanded(
+          child: Padding(
+              padding: EdgeInsets.all(_height * 0.01),
+              child: Container(
+                  width: _width * 0.2,
+                  height: _height * 0.08,
+                  decoration: BoxDecoration(
+                      color: Colors.black26,
+                      borderRadius: BorderRadius.circular(20.0)),
+                  child: Obx(
+                        () => PopupMenuButton<String>(
+                      initialValue: homeController.targetSelected.value,
+                      onSelected: (value) =>
+                          homeController.changeTargets(value),
+                      itemBuilder: (BuildContext context) {
+                        return <PopupMenuEntry<String>>[
+                          ...homeController.targets
+                              .map((element) => PopupMenuItem(
+                            value: element,
+                            child: Text(
+                              element,
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ))
+                              .toList()
+                        ];
+                      },
+                      icon: Icon(
+                        MyFlutterApp.yoga_standing_forward_fold_pose,
+                        color: Colors.red,
+                      ),
+                      color: Colors.black38,
+                      constraints: BoxConstraints(
+                        maxHeight: _height * 0.5,
+                        maxWidth: _width * 0.2,
+                      ),
+                    ),
+                  ))),
+        ),
+      ],
+    );
+  }
+
+
 }
